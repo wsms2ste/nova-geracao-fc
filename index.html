@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Geração Escolinha F.C. | Matrículas Abertas</title>
+<meta name="description" content="Escolinha de futebol Nova Geração F.C. Matrícula aberta, unidades pertinho de você, loja de uniformes e transmissão dos jogos ao vivo.">
+<link rel="icon" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121110;
+    --bg-soft:#17150F;
+    --panel:#1D1A12;
+    --panel-2:#242017;
+    --yellow:#FFC700;
+    --yellow-deep:#C99400;
+    --ink:#12100A;
+    --paper:#F7F3E6;
+    --muted:#B6AF98;
+    --line:rgba(247,243,230,.12);
+    --red:#E7402B;
+    --radius:16px;
+    --display:'Anton', sans-serif;
+    --body:'Manrope', sans-serif;
+    --mono:'JetBrains Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  }
+  body{ background:var(--bg); color:var(--paper); font-family:var(--body); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  :focus-visible{ outline:3px solid var(--yellow); outline-offset:3px; }
+  .wrap{ width:min(1140px, 100% - 3rem); margin-inline:auto; }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:400; letter-spacing:.01em; text-transform:uppercase; color:var(--paper); }
+  h1{ font-size:clamp(2.5rem,6.4vw,4.4rem); line-height:.98; }
+  h2{ font-size:clamp(1.9rem,3.8vw,2.6rem); line-height:1.05; }
+  h3{ font-size:1.05rem; letter-spacing:.02em; }
+  .muted{ color:var(--muted); }
+  .accent{ color:var(--yellow); }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-family:var(--mono); font-weight:700; font-size:.72rem;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--yellow);
+    margin-bottom:1rem;
+  }
+  .eyebrow::before{ content:""; width:18px; height:10px; background:var(--check-mini); flex:none; }
+
+  /* checker signature strip */
+  .checker-strip{
+    height:14px; width:100%;
+    background-image:
+      linear-gradient(45deg, var(--ink) 25%, transparent 25%, transparent 75%, var(--ink) 75%),
+      linear-gradient(45deg, var(--ink) 25%, var(--yellow) 25%, var(--yellow) 75%, var(--ink) 75%);
+    background-size:14px 14px;
+    background-position:0 0, 7px 7px;
+    background-color:var(--yellow);
+  }
+  :root{
+    --check-mini: repeating-conic-gradient(var(--yellow) 0% 25%, var(--ink) 0% 50%) 0/10px 10px;
+  }
+  .eyebrow::before{ background: var(--check-mini); background-size:5px 5px; border-radius:2px; }
+
+  section{ padding:5.4rem 0; }
+  .section-head{ max-width:58ch; margin-bottom:2.8rem; }
+  .band{ background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+    font-family:var(--body); font-weight:800; font-size:.9rem;
+    padding:.95rem 1.7rem; border-radius:8px; border:2px solid transparent;
+    cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-yellow{ background:var(--yellow); color:var(--ink); box-shadow:0 6px 0 var(--yellow-deep); }
+  .btn-yellow:hover{ box-shadow:0 8px 0 var(--yellow-deep); }
+  .btn-outline{ border-color:var(--paper); color:var(--paper); background:transparent; }
+  .btn-outline:hover{ background:var(--paper); color:var(--ink); }
+  .btn-sm{ padding:.6rem 1.1rem; font-size:.78rem; }
+  .btn-block{ width:100%; }
+
+  /* ---------- header ---------- */
+  header{ position:sticky; top:0; z-index:150; background:rgba(18,17,16,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:.7rem 0; }
+  .logo{ display:flex; align-items:center; gap:.6rem; font-family:var(--display); font-size:1.1rem; letter-spacing:.02em; }
+  .logo img{ width:44px; height:44px; object-fit:contain; flex:none; }
+  .nav-links{ display:flex; gap:1.6rem; font-size:.86rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+  .nav-links a{ color:var(--muted); transition:color .15s ease; }
+  .nav-links a:hover{ color:var(--yellow); }
+  .nav-cta{ display:flex; align-items:center; gap:.7rem; }
+  .menu-toggle{ display:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; overflow:hidden; padding:4rem 0 0;
+    background:
+      radial-gradient(circle at 85% 0%, rgba(255,199,0,.16), transparent 45%),
+      linear-gradient(180deg, #17150F 0%, var(--bg) 65%);
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:3rem; align-items:center; padding-bottom:3rem; }
+  .hero p.lead{ font-size:1.08rem; color:var(--muted); max-width:46ch; margin:1.2rem 0 2rem; }
+  .hero-actions{ display:flex; gap:1rem; flex-wrap:wrap; }
+
+  .field-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.7rem; box-shadow:0 20px 45px -22px rgba(0,0,0,.6); position:relative;
+  }
+  .field-card h3{ margin-bottom:1rem; color:var(--yellow); }
+  .field-list{ display:flex; flex-direction:column; gap:.75rem; }
+  .field-list li{ display:flex; gap:.65rem; font-size:.9rem; align-items:flex-start; color:var(--paper); }
+  .field-list li::before{ content:"◆"; color:var(--yellow); flex:none; font-size:.7rem; padding-top:.3rem; }
+
+  /* scoreboard */
+  .scoreboard{
+    background:var(--ink); border:1px solid rgba(255,199,0,.25); color:#fff; border-radius:var(--radius);
+    padding:1.6rem 1.8rem; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1.2rem;
+    box-shadow:0 20px 45px -20px rgba(0,0,0,.7); margin-bottom:-3.2rem; transform:translateY(2.4rem);
+    position:relative; z-index:5;
+  }
+  .score-block{ text-align:center; }
+  .score-label{ font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+  .score-num{ font-family:var(--display); font-weight:400; font-size:2.1rem; color:var(--yellow); }
+  .score-vs{ font-family:var(--display); color:#5a5646; font-size:1rem; }
+  .scoreboard-note{ grid-column:1/-1; text-align:center; font-size:.82rem; color:var(--muted); padding-top:.5rem; border-top:1px solid rgba(255,255,255,.1); }
+  .scoreboard-note b{ color:var(--yellow); }
+  .hero-space{ padding-top:3.2rem; }
+
+  /* ---------- unidades ---------- */
+  .unidades{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
+  .unidade-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .unidade-top{ background:var(--yellow); color:var(--ink); padding:1.1rem 1.4rem; }
+  .unidade-top .eyebrow{ color:var(--ink); margin-bottom:.2rem; }
+  .unidade-top .eyebrow::before{ background:var(--ink); }
+  .unidade-top h3{ color:var(--ink); }
+  .unidade-body{ padding:1.3rem 1.4rem 1.5rem; }
+  .unidade-row{ display:flex; gap:.7rem; font-size:.87rem; margin-bottom:.7rem; align-items:flex-start; }
+  .unidade-row .tag{ flex:none; font-family:var(--mono); font-size:.66rem; font-weight:700; color:var(--yellow); text-transform:uppercase; width:82px; padding-top:.1rem; }
+  .unidade-row span.val{ color:var(--paper); }
+
+  /* ---------- matrícula ---------- */
+  .matricula-grid{ display:grid; grid-template-columns:.9fr 1.1fr; gap:3rem; align-items:start; }
+  .form-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:2rem; }
+  .form-row{ margin-bottom:1.1rem; }
+  .form-row label{ display:block; font-size:.8rem; font-weight:700; margin-bottom:.4rem; color:var(--yellow); }
+  .form-row input, .form-row select{
+    width:100%; padding:.75rem .9rem; border:1.5px solid var(--line); border-radius:8px;
+    font-family:var(--body); font-size:.92rem; background:var(--bg); color:var(--paper);
+  }
+  .form-row input::placeholder{ color:#71695076; }
+  .form-row input:focus, .form-row select:focus{ border-color:var(--yellow); outline:none; }
+  .form-two{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-note{ font-size:.78rem; color:var(--muted); margin-top:1rem; }
+
+  .steps-mini{ display:flex; flex-direction:column; gap:1rem; }
+  .step-mini{ display:flex; gap:1rem; align-items:flex-start; }
+  .step-mini .num{ flex:none; width:34px; height:34px; border-radius:50%; background:var(--yellow); color:var(--ink); font-family:var(--mono); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+  .step-mini h3{ font-size:.98rem; margin-bottom:.2rem; text-transform:none; font-family:var(--body); font-weight:800; }
+  .step-mini p{ font-size:.86rem; color:var(--muted); }
+
+  /* ---------- loja / produtos ---------- */
+  .produtos{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
+  .produto-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; }
+  .produto-img{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--ink); }
+  .produto-img img{ width:100%; height:100%; object-fit:cover; }
+  .produto-badge{ position:absolute; top:.8rem; left:.8rem; background:var(--red); color:#fff; font-family:var(--mono); font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:.35rem .6rem; border-radius:5px; }
+  .produto-body{ padding:1.3rem 1.4rem 1.5rem; display:flex; flex-direction:column; gap:.8rem; flex:1; }
+  .produto-body h3{ font-family:var(--body); font-weight:800; text-transform:none; font-size:1.05rem; }
+  .produto-sub{ font-size:.8rem; color:var(--muted); margin-top:-.5rem; }
+  .produto-itens{ display:flex; flex-direction:column; gap:.4rem; font-size:.82rem; color:var(--muted); }
+  .produto-itens li::before{ content:"✓ "; color:var(--yellow); font-weight:700; }
+  .produto-preco{ display:flex; align-items:baseline; gap:.6rem; margin-top:auto; padding-top:.4rem; }
+  .preco-antigo{ font-size:.85rem; color:var(--muted); text-decoration:line-through; }
+  .preco-atual{ font-family:var(--display); font-size:1.7rem; color:var(--yellow); }
+  .preco-atual small{ font-family:var(--body); font-size:.7rem; font-weight:700; color:var(--muted); text-transform:uppercase; }
+
+  /* ---------- transmissões ---------- */
+  .stream-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:2rem; align-items:start; }
+  .video-frame{ position:relative; padding-top:56.25%; background:var(--ink); border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .video-caption{ font-size:.8rem; color:var(--muted); margin-top:.8rem; }
+  .match-list{ display:flex; flex-direction:column; gap:.9rem; }
+  .match-item{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:1rem 1.2rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+  .match-date{ font-family:var(--mono); font-size:.76rem; color:var(--yellow); font-weight:700; }
+  .match-teams{ font-size:.9rem; font-weight:700; }
+  .match-item .btn{ padding:.5rem .9rem; font-size:.72rem; }
+
+  /* ---------- instagram ---------- */
+  .insta-card{
+    display:flex; align-items:center; gap:1.6rem; background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:1.8rem 2rem; flex-wrap:wrap;
+  }
+  .insta-icon{
+    flex:none; width:64px; height:64px; border-radius:18px;
+    background:conic-gradient(from -45deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5, #FEDA75);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .insta-icon svg{ width:34px; height:34px; }
+  .insta-info{ flex:1; min-width:220px; }
+  .insta-info h3{ text-transform:none; font-family:var(--body); font-weight:800; font-size:1.05rem; }
+  .insta-info p{ font-size:.86rem; color:var(--muted); margin-top:.2rem; }
+  .insta-handle{ font-family:var(--mono); color:var(--yellow); font-size:.85rem; }
+
+  /* ---------- ofertas ---------- */
+  .ofertas{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; }
+  .oferta-card{ background:var(--ink); color:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.7rem; position:relative; overflow:hidden; }
+  .oferta-tag{ font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--yellow); margin-bottom:.6rem; display:block; }
+  .oferta-card h3{ font-family:var(--body); font-weight:800; text-transform:none; font-size:1.05rem; margin-bottom:.5rem; }
+  .oferta-card p{ font-size:.87rem; color:#c9c3ae; }
+
+  /* ---------- cta final ---------- */
+  .final-cta{ text-align:center; padding:5.4rem 0; background:linear-gradient(180deg, var(--bg), var(--bg-soft)); }
+  .final-cta h2{ margin-bottom:.9rem; }
+  .final-cta p{ color:var(--muted); max-width:44ch; margin:0 auto 2rem; }
+
+  /* ---------- footer ---------- */
+  footer{ background:var(--ink); color:var(--muted); padding:3rem 0 2rem; }
+  .footer-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; align-items:center; }
+  .footer-logo{ display:flex; align-items:center; gap:.6rem; font-family:var(--display); color:#fff; font-size:1rem; }
+  .footer-logo img{ width:32px; height:32px; }
+  .footer-links{ display:flex; gap:1.5rem; font-size:.82rem; flex-wrap:wrap; }
+  .footer-links a:hover{ color:#fff; }
+  .footer-admin{ font-size:.76rem; color:#665f4a; margin-top:1.6rem; border-top:1px solid rgba(255,255,255,.08); padding-top:1.4rem; }
+  .footer-admin a{ color:var(--yellow); }
+
+  /* ---------- whatsapp flutuante ---------- */
+  .wa-float{
+    position:fixed; right:1.4rem; bottom:1.4rem; z-index:180; display:flex; align-items:center; gap:.6rem;
+    background:#22c35e; color:#0e1a12; padding:.85rem 1.2rem; border-radius:50px; font-weight:800; font-size:.85rem;
+    box-shadow:0 6px 24px rgba(34,195,94,.35); animation:pulse 2.6s ease-in-out infinite;
+  }
+  .wa-float svg{ width:20px; height:20px; flex:none; }
+  @keyframes pulse{ 0%,100%{ box-shadow:0 6px 24px rgba(34,195,94,.35); } 50%{ box-shadow:0 6px 30px rgba(34,195,94,.6); } }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (max-width:960px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .unidades{ grid-template-columns:1fr; }
+    .produtos{ grid-template-columns:1fr 1fr; }
+    .matricula-grid{ grid-template-columns:1fr; }
+    .stream-grid{ grid-template-columns:1fr; }
+    .ofertas{ grid-template-columns:1fr; }
+    .scoreboard{ grid-template-columns:1fr 1fr; }
+    .score-vs{ display:none; }
+  }
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed; inset:64px 0 auto 0; flex-direction:column; background:rgba(18,17,16,.98);
+      border-bottom:1px solid var(--line); padding:1.2rem 1.5rem 1.6rem; gap:1rem;
+      transform:translateY(-130%); transition:transform .25s ease;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .menu-toggle{ display:flex; align-items:center; justify-content:center; width:38px; height:38px; background:transparent; border:1.5px solid var(--line); border-radius:8px; color:var(--paper); font-size:1.1rem; }
+    .nav-cta .btn-outline{ display:none; }
+    .form-two{ grid-template-columns:1fr; }
+    .produtos{ grid-template-columns:1fr; }
+    .scoreboard{ grid-template-columns:1fr; text-align:center; }
+    .wa-float span{ display:none; }
+    .wa-float{ padding:.85rem; }
+    .insta-card{ flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="#topo" class="logo"><img id="logoImg" src="assets/logo.webp" alt="Escudo Nova Geração F.C.">Nova Geração F.C.</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#sobre">Sobre</a>
+        <a href="#unidades">Unidades</a>
+        <a href="#loja">Loja</a>
+        <a href="#matricula">Matrícula</a>
+        <a href="#transmissoes">Jogos ao vivo</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#matricula" class="btn btn-outline btn-sm">Matricular</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+  <div class="checker-strip" aria-hidden="true"></div>
+
+  <main id="topo">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Matrículas abertas · 5 a 17 anos</span>
+          <h1>Aqui a próxima<br><span class="accent">picada</span> é sua.</h1>
+          <p class="lead">Técnica, disciplina e o espírito da colmeia em turmas por idade, com professores formados e unidade perto de você.</p>
+          <div class="hero-actions">
+            <a class="btn btn-yellow wa-link" data-msg="Olá! Quero matricular meu filho(a) na Escolinha Nova Geração." href="#" target="_blank" rel="noopener">Matricular via WhatsApp</a>
+            <a href="#loja" class="btn btn-outline">Ver loja de uniformes</a>
+          </div>
+        </div>
+        <div class="field-card">
+          <h3>Por que a Nova Geração</h3>
+          <ul class="field-list">
+            <li>Turmas separadas por categoria, do Sub-7 ao Sub-17</li>
+            <li>Professores formados em educação física</li>
+            <li>Loja própria de uniforme e material de treino</li>
+            <li>Jogos e amistosos com transmissão ao vivo pras famílias</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <div class="scoreboard reveal">
+          <div class="score-block">
+            <div class="score-label">Vagas restantes</div>
+            <div class="score-num" id="statVagas">38</div>
+          </div>
+          <div class="score-vs">×</div>
+          <div class="score-block">
+            <div class="score-label">Desconto na matrícula</div>
+            <div class="score-num" id="statDesconto">R$50</div>
+          </div>
+          <div class="scoreboard-note">Válido até <b id="statValidade">15/08</b> — garanta a vaga do seu craque antes que a temporada comece.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="hero-space"></div>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Metodologia</span>
+          <h2>Treino sério, <span class="accent">jeito de criança</span>.</h2>
+          <p class="muted">Trabalhamos técnica, tática e condicionamento respeitando a fase de desenvolvimento de cada idade — sem cobrança de resultado, com foco em formar atletas e pessoas melhores.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- UNIDADES -->
+    <section id="unidades" class="band">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Nossas unidades</span>
+          <h2>Escolha a unidade mais perto de você</h2>
+          <p class="muted">Todas as unidades seguem o mesmo padrão de estrutura, categorias e metodologia.</p>
+        </div>
+        <div class="unidades" id="unidadesGrid"></div>
+      </div>
+    </section>
+
+    <!-- LOJA / UNIFORMES -->
+    <section id="loja">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Loja oficial</span>
+          <h2>Uniforme e materiais Nova Geração</h2>
+          <p class="muted">Compra rápida e direta pelo WhatsApp — escolha o produto e finalize o pedido com a coordenação.</p>
+        </div>
+        <div class="produtos" id="produtosGrid"></div>
+      </div>
+    </section>
+
+    <!-- MATRÍCULA -->
+    <section id="matricula" class="band">
+      <div class="wrap matricula-grid">
+        <div class="reveal">
+          <span class="eyebrow">Como matricular</span>
+          <h2>3 passos e seu craque já tá dentro</h2>
+          <div class="steps-mini" style="margin-top:1.6rem;">
+            <div class="step-mini"><div class="num">1</div><div><h3>Preencha o formulário</h3><p>Nome, idade e unidade de interesse.</p></div></div>
+            <div class="step-mini"><div class="num">2</div><div><h3>Confirme no WhatsApp</h3><p>O formulário já monta a mensagem pra você.</p></div></div>
+            <div class="step-mini"><div class="num">3</div><div><h3>Comece a treinar</h3><p>Combinamos o primeiro dia de treino e o kit de boas-vindas.</p></div></div>
+          </div>
+        </div>
+
+        <form class="form-card reveal" id="formMatricula">
+          <div class="form-row">
+            <label for="nomeAluno">Nome do aluno(a)</label>
+            <input type="text" id="nomeAluno" required placeholder="Nome completo">
+          </div>
+          <div class="form-two">
+            <div class="form-row">
+              <label for="idadeAluno">Idade</label>
+              <input type="number" id="idadeAluno" min="4" max="18" required placeholder="Ex: 9">
+            </div>
+            <div class="form-row">
+              <label for="unidadeInteresse">Unidade</label>
+              <select id="unidadeInteresse" required><option value="">Selecione</option></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="nomeResponsavel">Nome do responsável</label>
+            <input type="text" id="nomeResponsavel" required placeholder="Nome completo">
+          </div>
+          <div class="form-row">
+            <label for="telResponsavel">Telefone / WhatsApp</label>
+            <input type="tel" id="telResponsavel" required placeholder="(00) 00000-0000">
+          </div>
+          <button type="submit" class="btn btn-yellow btn-block">Enviar matrícula pelo WhatsApp</button>
+          <p class="form-note">Ao enviar, abrimos o WhatsApp com seus dados prontos — é só confirmar o envio.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- TRANSMISSÕES -->
+    <section id="transmissoes">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Jogos ao vivo</span>
+          <h2>Acompanhe os jogos direto do campo</h2>
+          <p class="muted">Transmitimos amistosos e campeonatos pelo YouTube pra quem não pode ir até a quadra.</p>
+        </div>
+        <div class="stream-grid">
+          <div class="reveal">
+            <div class="video-frame"><iframe id="streamFrame" src="" title="Transmissão ao vivo Nova Geração" allowfullscreen></iframe></div>
+            <p class="video-caption" id="streamCaption"></p>
+          </div>
+          <div class="match-list reveal" id="matchList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTAGRAM -->
+    <section class="band">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Rede social oficial</span>
+          <h2>Siga a colmeia no Instagram</h2>
+        </div>
+        <a class="insta-card reveal" id="instaLink" href="#" target="_blank" rel="noopener">
+          <div class="insta-icon"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56a5.87 5.87 0 00-2.13 1.38A5.87 5.87 0 00.63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.87 5.87 0 002.13-1.38 5.87 5.87 0 001.38-2.13c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.87 5.87 0 00-1.38-2.13A5.87 5.87 0 0019.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1012 18.16 6.16 6.16 0 0012 5.84zm0 10.16a4 4 0 110-8 4 4 0 010 8zM18.41 4.15a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/></svg></div>
+          <div class="insta-info">
+            <h3>Escolinha Nova Geração PVH FC</h3>
+            <p>Fotos e vídeos dos treinos, jogos e bastidores — <span class="insta-handle" id="instaHandle">@escolinha_nova_geracao_pvh_fc</span></p>
+          </div>
+          <span class="btn btn-yellow btn-sm">Seguir no Instagram</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- OFERTAS -->
+    <section id="ofertas">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Ofertas e promoções</span>
+          <h2>Vantagens pra quem chega agora</h2>
+        </div>
+        <div class="ofertas" id="ofertasGrid"></div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="final-cta">
+      <div class="wrap">
+        <h2 class="reveal">Vamos formar o próximo craque?</h2>
+        <p class="reveal">Fale agora com a coordenação e garanta a vaga na unidade mais perto de você.</p>
+        <a class="btn btn-yellow wa-link reveal" data-msg="Olá! Quero saber mais sobre a matrícula na Nova Geração." href="#" target="_blank" rel="noopener">Falar no WhatsApp agora</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <span class="footer-logo"><img src="assets/logo.webp" alt="">Nova Geração F.C.</span>
+      <div class="footer-links">
+        <a href="#unidades">Unidades</a>
+        <a href="#loja">Loja</a>
+        <a href="#matricula">Matrícula</a>
+        <a href="#transmissoes">Jogos ao vivo</a>
+        <a id="instaFooterLink" href="#" target="_blank" rel="noopener">Instagram</a>
+        <a class="wa-link" data-msg="Olá! Vim pelo site da Nova Geração." href="#" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="wrap footer-admin">
+      Área da equipe: para editar preços, links de transmissão, fotos e informações do site, acesse <a href="admin.html">o Painel Admin</a>. © <span id="year"></span> Escolinha Nova Geração F.C.
+    </div>
+  </footer>
+
+  <a class="wa-float wa-link" data-msg="Olá! Quero saber mais sobre a Escolinha Nova Geração." href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.24.6 4.34 1.65 6.15L4 29l8.02-1.62A11.98 11.98 0 0 0 16.02 27C22.65 27 28 21.6 28 15.02 28 8.4 22.65 3 16.02 3zm6.98 17.13c-.3.85-1.7 1.6-2.35 1.7-.6.1-1.36.14-2.2-.14-.5-.16-1.15-.37-1.98-.73-3.48-1.5-5.75-5-5.93-5.24-.17-.24-1.42-1.9-1.42-3.63 0-1.72.9-2.57 1.22-2.92.31-.35.68-.44.9-.44.23 0 .46 0 .66.01.21.01.5-.08.78.6.3.7.99 2.42 1.08 2.6.09.17.15.38.03.6-.12.24-.18.38-.36.58-.18.2-.38.46-.54.62-.18.18-.37.37-.16.73.21.36.94 1.55 2.02 2.5 1.39 1.24 2.56 1.63 2.92 1.81.36.18.57.15.78-.09.21-.24.9-1.05 1.14-1.41.24-.36.48-.3.8-.18.32.12 2.05.97 2.4 1.15.35.18.58.27.67.42.09.15.09.85-.21 1.7z"/></svg>
+    <span>Falar no WhatsApp</span>
+  </a>
+
+<script src="config.js"></script>
+<script>
+  // Carrega dados salvos pelo painel admin (se existirem no mesmo navegador),
+  // senão usa os valores padrão do config.js
+  function loadData(){
+    try{
+      const saved = localStorage.getItem('ng_site_config');
+      if (saved) return Object.assign({}, window.SITE_CONFIG, JSON.parse(saved));
+    }catch(e){ console.warn('Não foi possível ler dados salvos do admin', e); }
+    return window.SITE_CONFIG;
+  }
+  const DATA = loadData();
+  const money = v => Number(v).toFixed(2).replace('.', ',');
+
+  // WhatsApp em todos os botões
+  document.querySelectorAll('.wa-link').forEach(link => {
+    const msg = link.getAttribute('data-msg') || 'Olá! Vim pelo site da Nova Geração.';
+    link.href = `https://wa.me/${DATA.whatsapp}?text=${encodeURIComponent(msg)}`;
+  });
+
+  // Logo
+  if (DATA.logo) document.querySelectorAll('#logoImg').forEach(img => img.src = DATA.logo);
+
+  // Placar do hero
+  document.getElementById('statVagas').textContent = DATA.hero.vagas;
+  document.getElementById('statDesconto').textContent = DATA.hero.desconto;
+  document.getElementById('statValidade').textContent = DATA.hero.validade;
+
+  // Unidades
+  const unidadesGrid = document.getElementById('unidadesGrid');
+  const unidadeSelect = document.getElementById('unidadeInteresse');
+  DATA.unidades.forEach(u => {
+    unidadesGrid.insertAdjacentHTML('beforeend', `
+      <div class="unidade-card reveal">
+        <div class="unidade-top"><span class="eyebrow">Unidade</span><h3>${u.nome}</h3></div>
+        <div class="unidade-body">
+          <div class="unidade-row"><span class="tag">Endereço</span><span class="val">${u.endereco}</span></div>
+          <div class="unidade-row"><span class="tag">Categorias</span><span class="val">${u.categorias}</span></div>
+          <div class="unidade-row"><span class="tag">Responsável</span><span class="val">${u.responsavel}</span></div>
+          <a class="btn btn-outline btn-sm btn-block wa-link" data-msg="Olá! Tenho interesse na unidade ${u.nome} da Nova Geração." href="https://wa.me/${DATA.whatsapp}?text=${encodeURIComponent('Olá! Tenho interesse na unidade '+u.nome+' da Nova Geração.')}" target="_blank" rel="noopener">Falar sobre esta unidade</a>
+        </div>
+      </div>`);
+    unidadeSelect.insertAdjacentHTML('beforeend', `<option>${u.nome}</option>`);
+  });
+
+  // Produtos / loja
+  const produtosGrid = document.getElementById('produtosGrid');
+  DATA.produtos.forEach(p => {
+    const msg = `Olá! Quero comprar: ${p.nome} — R$ ${money(p.preco)}.`;
+    produtosGrid.insertAdjacentHTML('beforeend', `
+      <div class="produto-card reveal">
+        <div class="produto-img">
+          <img src="${p.imagem}" alt="${p.nome}" loading="lazy">
+          ${p.badge ? `<span class="produto-badge">${p.badge}</span>` : ''}
+        </div>
+        <div class="produto-body">
+          <h3>${p.nome}</h3>
+          ${p.subtitulo ? `<p class="produto-sub">${p.subtitulo}</p>` : ''}
+          <ul class="produto-itens">${(p.itens||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
+          <div class="produto-preco">
+            ${p.precoAntigo ? `<span class="preco-antigo">R$ ${money(p.precoAntigo)}</span>` : ''}
+            <span class="preco-atual">R$ ${money(p.preco)} <small>${p.precoAntigo ? '' : 'à vista'}</small></span>
+          </div>
+          <a class="btn btn-yellow btn-block" href="https://wa.me/${DATA.whatsapp}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Comprar pelo WhatsApp</a>
+        </div>
+      </div>`);
+  });
+
+  // Transmissão + jogos
+  document.getElementById('streamFrame').src = DATA.transmissao.embedUrl;
+  document.getElementById('streamCaption').textContent = DATA.transmissao.legenda;
+  const matchList = document.getElementById('matchList');
+  DATA.jogos.forEach(j => {
+    matchList.insertAdjacentHTML('beforeend', `
+      <div class="match-item">
+        <div><div class="match-date">${j.data}</div><div class="match-teams">${j.times}</div></div>
+        <a class="btn btn-outline" href="${j.link}" target="_blank" rel="noopener">Assistir</a>
+      </div>`);
+  });
+
+  // Instagram
+  document.getElementById('instaLink').href = DATA.instagramUrl;
+  document.getElementById('instaFooterLink').href = DATA.instagramUrl;
+  document.getElementById('instaHandle').textContent = DATA.instagramHandle;
+
+  // Ofertas
+  const ofertasGrid = document.getElementById('ofertasGrid');
+  DATA.ofertas.forEach(o => {
+    ofertasGrid.insertAdjacentHTML('beforeend', `
+      <div class="oferta-card reveal">
+        <span class="oferta-tag">${o.tag}</span>
+        <h3>${o.titulo}</h3>
+        <p>${o.texto}</p>
+      </div>`);
+  });
+
+  // formulário de matrícula -> monta mensagem e abre WhatsApp
+  document.getElementById('formMatricula').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nome = document.getElementById('nomeAluno').value.trim();
+    const idade = document.getElementById('idadeAluno').value.trim();
+    const unidade = document.getElementById('unidadeInteresse').value;
+    const responsavel = document.getElementById('nomeResponsavel').value.trim();
+    const telefone = document.getElementById('telResponsavel').value.trim();
+    const msg = `Olá! Quero matricular meu filho(a) na Nova Geração.\n\nAluno(a): ${nome}\nIdade: ${idade}\nUnidade de interesse: ${unidade}\nResponsável: ${responsavel}\nTelefone: ${telefone}`;
+    window.open(`https://wa.me/${DATA.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+
+  // menu mobile
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => { navLinks.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); });
+    });
+  }
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

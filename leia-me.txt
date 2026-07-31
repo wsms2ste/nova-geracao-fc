@@ -1,0 +1,83 @@
+ESCOLINHA NOVA GERAÇÃO F.C. — GUIA RÁPIDO DO SITE
+====================================================
+
+ARQUIVOS DO SITE
+-----------------
+index.html   -> a página que os visitantes veem
+admin.html   -> o painel administrativo (edição de tudo)
+config.js    -> onde ficam guardados preços, links, textos e fotos
+assets/      -> imagens (escudo, uniformes)
+
+Os quatro precisam ficar SEMPRE juntos, na mesma pasta, no seu servidor
+de hospedagem (Hostinger, Hostgator, GitHub Pages, etc). Não renomeie
+nenhum arquivo.
+
+
+COMO PUBLICAR
+--------------
+1. Envie a pasta inteira (index.html, admin.html, config.js e a pasta
+   assets) para o servidor do seu site, do jeito que está.
+2. O endereço do site público será o de sempre (ex: novageracao.com.br).
+3. O painel fica em: novageracao.com.br/admin.html
+   Senha inicial: novageracao2026  (troque assim que entrar!)
+
+
+COMO EDITAR PREÇOS, LINKS E FOTOS
+-----------------------------------
+1. Acesse .../admin.html e faça login.
+2. Edite o que quiser: WhatsApp, Instagram, preços da loja, fotos dos
+   produtos, link de transmissão ao vivo, jogos da semana, unidades,
+   ofertas e a senha do painel.
+3. Toda alteração já fica salva automaticamente NESTE NAVEGADOR — clique
+   em "Ver site" para conferir como ficou.
+4. Para a alteração valer para TODOS OS VISITANTES (não só no seu
+   navegador), clique em "Baixar config.js atualizado". Isso baixa um
+   novo arquivo config.js pronto.
+5. Envie esse config.js baixado para o servidor, substituindo o
+   config.js antigo (mesmo nome, mesma pasta). Pronto — o site
+   atualiza para todo mundo.
+
+Isso é assim porque o site é um site simples e leve, sem mensalidade de
+banco de dados — o que deixa ele rápido e barato de manter. Se no futuro
+vocês quiserem que a equipe edite o site de qualquer computador e a
+mudança apareça na hora pra todo mundo (sem precisar reenviar arquivo),
+dá pra evoluir o painel para salvar direto num banco de dados online.
+É só pedir.
+
+
+SOBRE O NÚMERO DE WHATSAPP
+-----------------------------
+Já está configurado para 55 69 9380-1797 em todos os botões do site
+("Falar no WhatsApp", "Matricular", "Comprar", botões de cada unidade
+etc). Pode trocar a qualquer momento pelo painel, em Geral.
+
+
+SOBRE A LOJA DE UNIFORMES
+-----------------------------
+Os 3 produtos que você me passou já estão cadastrados com as fotos e
+preços das suas artes promocionais:
+- Uniforme completo (camisa + short personalizados) — R$140,00
+- Calção de treino — de R$79,99 por R$45,00
+- Meia esportiva antiderrapante — de R$45,00 por R$29,99
+
+Cada botão "Comprar pelo WhatsApp" já abre uma conversa com o nome e
+preço do produto preenchidos. Adicione, edite ou remova produtos pelo
+painel a qualquer momento.
+
+
+SOBRE O INSTAGRAM
+-----------------------------
+O site tem uma seção "Siga a colmeia no Instagram" com um cartão que
+leva direto para o perfil oficial:
+https://www.instagram.com/escolinha_nova_geracao_pvh_fc/
+(O Instagram não permite mostrar as fotos/posts embutidos sem login
+em sites de terceiros — por isso usamos um cartão com botão de seguir,
+que é o formato permitido e mais confiável.)
+
+
+SEGURANÇA DO PAINEL
+-----------------------------
+A senha protege o acesso ao painel de edição, mas por ser um site sem
+servidor próprio, não é o mesmo nível de segurança de um sistema
+bancário — é o suficiente para impedir curiosos, mas não compartilhe a
+senha e troque-a periodicamente pelo próprio painel (seção Segurança).

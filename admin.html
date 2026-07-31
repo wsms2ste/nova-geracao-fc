@@ -164,8 +164,9 @@
         <h2>Transmissão ao vivo</h2>
         <p class="desc">Link do vídeo/canal do YouTube incorporado no site, e a agenda de jogos.</p>
         <div class="field">
-          <label for="cfgEmbed">Link de incorporação (embed) do YouTube</label>
-          <input type="text" id="cfgEmbed" placeholder="https://www.youtube.com/embed/...">
+          <label for="cfgEmbed">Link do vídeo/live no YouTube</label>
+          <input type="text" id="cfgEmbed" placeholder="Cole aqui o link normal do YouTube (assistir, live ou compartilhar)">
+          <p class="hint" id="embedHint">Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.</p>
         </div>
         <div class="field">
           <label for="cfgLegenda">Legenda abaixo do vídeo</label>
@@ -215,6 +216,22 @@
 <script src="config.js"></script>
 <script>
   const DEFAULTS = window.SITE_CONFIG;
+
+  function toYouTubeEmbed(url){
+    if (!url) return url;
+    if (/youtube\.com\/embed\//.test(url)) return url;
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{6,})/,
+      /[?&]v=([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/live\/([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/
+    ];
+    for (const re of patterns){
+      const m = url.match(re);
+      if (m) return `https://www.youtube.com/embed/${m[1]}`;
+    }
+    return url;
+  }
 
   async function sha256(text){
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -295,8 +312,28 @@
     bindSimpleField('cfgVagas', 'hero.vagas');
     bindSimpleField('cfgDesconto', 'hero.desconto');
     bindSimpleField('cfgValidade', 'hero.validade');
-    bindSimpleField('cfgEmbed', 'transmissao.embedUrl');
     bindSimpleField('cfgLegenda', 'transmissao.legenda');
+
+    const embedInput = document.getElementById('cfgEmbed');
+    const embedHint = document.getElementById('embedHint');
+    embedInput.value = state.transmissao.embedUrl || '';
+    embedInput.addEventListener('input', () => {
+      state.transmissao.embedUrl = embedInput.value;
+      persist();
+    });
+    embedInput.addEventListener('blur', () => {
+      const converted = toYouTubeEmbed(embedInput.value.trim());
+      if (converted !== embedInput.value.trim()){
+        embedInput.value = converted;
+        state.transmissao.embedUrl = converted;
+        persist();
+        embedHint.textContent = 'Link convertido automaticamente para o formato de incorporação ✓';
+        embedHint.style.color = 'var(--green)';
+      } else {
+        embedHint.textContent = 'Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.';
+        embedHint.style.color = 'var(--muted)';
+      }
+    });
 
     document.getElementById('logoThumb').src = state.logo;
     document.getElementById('logoUpload').addEventListener('change', async (e) => {

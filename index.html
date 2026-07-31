@@ -122,17 +122,21 @@
   /* scoreboard */
   .scoreboard{
     background:var(--ink); border:1px solid rgba(255,199,0,.25); color:#fff; border-radius:var(--radius);
-    padding:1.6rem 1.8rem; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1.2rem;
-    box-shadow:0 20px 45px -20px rgba(0,0,0,.7); margin-bottom:-3.2rem; transform:translateY(2.4rem);
-    position:relative; z-index:5;
+    padding:1.8rem 2rem; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1.4rem;
+    box-shadow:0 20px 45px -20px rgba(0,0,0,.7);
+    margin-top:2.6rem; position:relative; z-index:5;
   }
   .score-block{ text-align:center; }
-  .score-label{ font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
-  .score-num{ font-family:var(--display); font-weight:400; font-size:2.1rem; color:var(--yellow); }
-  .score-vs{ font-family:var(--display); color:#5a5646; font-size:1rem; }
-  .scoreboard-note{ grid-column:1/-1; text-align:center; font-size:.82rem; color:var(--muted); padding-top:.5rem; border-top:1px solid rgba(255,255,255,.1); }
+  .score-label{ font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+  .score-num{ font-family:var(--display); font-weight:400; font-size:2.1rem; color:var(--yellow); line-height:1; }
+  .score-vs{
+    flex:none; width:42px; height:42px; border-radius:50%; background:rgba(255,199,0,.12);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display); color:var(--yellow); font-size:1.05rem;
+  }
+  .scoreboard-note{ grid-column:1/-1; text-align:center; font-size:.82rem; color:var(--muted); padding-top:.9rem; margin-top:.3rem; border-top:1px solid rgba(255,255,255,.1); }
   .scoreboard-note b{ color:var(--yellow); }
-  .hero-space{ padding-top:3.2rem; }
+  .hero-space{ padding-top:1.6rem; }
 
   /* ---------- unidades ---------- */
   .unidades{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
@@ -298,7 +302,7 @@
       <div class="wrap hero-grid">
         <div>
           <span class="eyebrow">Matrículas abertas · 5 a 17 anos</span>
-          <h1>Aqui a próxima<br><span class="accent">jogada</span> é sua.</h1>
+          <h1>Aqui a próxima<br><span class="accent">picada</span> é sua.</h1>
           <p class="lead">Técnica, disciplina e o espírito da colmeia em turmas por idade, com professores formados e unidade perto de você.</p>
           <div class="hero-actions">
             <a class="btn btn-yellow wa-link" data-msg="Olá! Quero matricular meu filho(a) na Escolinha Nova Geração." href="#" target="_blank" rel="noopener">Matricular via WhatsApp</a>
@@ -421,7 +425,7 @@
         </div>
         <div class="stream-grid">
           <div class="reveal">
-            <div class="video-frame"><iframe id="streamFrame" src="" title="Transmissão ao vivo Nova Geração" allowfullscreen></iframe></div>
+            <div class="video-frame"><iframe id="streamFrame" src="" title="Transmissão ao vivo Nova Geração" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
             <p class="video-caption" id="streamCaption"></p>
           </div>
           <div class="match-list reveal" id="matchList"></div>
@@ -505,6 +509,25 @@
   const DATA = loadData();
   const money = v => Number(v).toFixed(2).replace('.', ',');
 
+  // Aceita qualquer formato de link do YouTube (assistir, live, youtu.be...)
+  // e converte para o formato de incorporação (/embed/), que é o único que
+  // funciona dentro do site.
+  function toYouTubeEmbed(url){
+    if (!url) return url;
+    if (/youtube\.com\/embed\//.test(url)) return url;
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{6,})/,
+      /[?&]v=([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/live\/([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/
+    ];
+    for (const re of patterns){
+      const m = url.match(re);
+      if (m) return `https://www.youtube.com/embed/${m[1]}`;
+    }
+    return url;
+  }
+
   // WhatsApp em todos os botões
   document.querySelectorAll('.wa-link').forEach(link => {
     const msg = link.getAttribute('data-msg') || 'Olá! Vim pelo site da Nova Geração.';
@@ -560,7 +583,7 @@
   });
 
   // Transmissão + jogos
-  document.getElementById('streamFrame').src = DATA.transmissao.embedUrl;
+  document.getElementById('streamFrame').src = toYouTubeEmbed(DATA.transmissao.embedUrl);
   document.getElementById('streamCaption').textContent = DATA.transmissao.legenda;
   const matchList = document.getElementById('matchList');
   DATA.jogos.forEach(j => {

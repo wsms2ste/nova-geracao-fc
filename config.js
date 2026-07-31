@@ -1,6 +1,6 @@
 /* ============================================================
    CONFIG.JS — Escolinha Nova Geração F.C.
-   Gerado pelo Painel Admin em 31/07/2026, 01:13:48
+   Gerado pelo Painel Admin em 31/07/2026, 01:26:39
    Substitua o config.js do seu site por este arquivo para publicar
    as alterações para todos os visitantes.
    ============================================================ */
@@ -13,7 +13,7 @@ window.SITE_CONFIG = {
   "instagramHandle": "@escolinha_nova_geracao_pvh_fc",
   "logo": "assets/logo.webp",
   "hero": {
-    "vagas": "6",
+    "vagas": "9",
     "desconto": "R$50",
     "validade": "15/07"
   },

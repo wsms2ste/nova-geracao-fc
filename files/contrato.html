@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrato digital | Escolinha Nova Geração</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1B2E;
+    --panel: #16233A;
+    --panel-2: #1C2C46;
+    --line: #2A3B57;
+    --green: #2FBE6B;
+    --green-soft: rgba(47,190,107,.14);
+    --amber: #F2B705;
+    --amber-soft: rgba(242,183,5,.14);
+    --red: #FF5A5A;
+    --red-soft: rgba(255,90,90,.14);
+    --text: #EAF0FA;
+    --muted: #93A2BE;
+    --radius: 12px;
+    --display: 'Baloo 2', sans-serif;
+    --body: 'Nunito', sans-serif;
+    --mono: 'Roboto Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--body);
+    line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh;
+    padding:1.5rem 1rem 3rem;
+  }
+  h1,h2,h3{ font-family:var(--display); }
+  .hidden{ display:none !important; }
+
+  .wrap{ max-width:640px; margin:0 auto; }
+
+  .header{ display:flex; align-items:center; gap:.7rem; margin-bottom:1.4rem; }
+  .header .ball{ width:34px; height:34px; border-radius:50%; background:radial-gradient(circle at 32% 30%, #fff, var(--bg) 75%); border:2px solid var(--text); flex-shrink:0; }
+  .header .brand{ font-family:var(--display); font-weight:800; font-size:1.05rem; }
+  .header .sub{ font-size:.76rem; color:var(--muted); }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.6rem; margin-bottom:1.2rem;
+  }
+
+  .estado{ text-align:center; padding:2.5rem 1rem; }
+  .estado .icone{ font-size:2.4rem; margin-bottom:.8rem; }
+  .estado h2{ font-size:1.2rem; margin-bottom:.5rem; }
+  .estado p{ color:var(--muted); font-size:.9rem; }
+
+  .resumo{
+    display:grid; grid-template-columns:1fr 1fr; gap:.9rem;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+    padding:1rem 1.1rem; margin-bottom:1.4rem;
+  }
+  .resumo .item .lbl{ font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:.2rem; }
+  .resumo .item .val{ font-weight:700; font-size:.92rem; }
+
+  .contrato-texto{ font-size:.88rem; color:var(--text); }
+  .contrato-texto h3{ font-size:.95rem; margin:1.1rem 0 .4rem; color:var(--amber); }
+  .contrato-texto h3:first-child{ margin-top:0; }
+  .contrato-texto p{ margin-bottom:.6rem; color:#D6E0F2; }
+  .contrato-texto ul{ padding-left:1.2rem; margin-bottom:.6rem; color:#D6E0F2; }
+  .contrato-texto li{ margin-bottom:.3rem; }
+
+  .aviso-modelo{
+    font-size:.74rem; color:var(--muted); background:var(--panel-2); border:1px dashed var(--line);
+    border-radius:8px; padding:.7rem .9rem; margin-top:1rem;
+  }
+
+  .form-row{ margin-bottom:1rem; }
+  .form-row label{ display:block; font-size:.78rem; font-weight:700; margin-bottom:.35rem; color:var(--muted); }
+  .form-row input{
+    width:100%; padding:.8rem .9rem; border-radius:8px; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--text); font-size:.92rem;
+  }
+  .form-row input:focus{ border-color:var(--green); outline:none; }
+  .checkbox-row{ display:flex; align-items:flex-start; gap:.6rem; margin:1.1rem 0 1.3rem; font-size:.84rem; color:#D6E0F2; }
+  .checkbox-row input{ margin-top:.2rem; width:18px; height:18px; flex-shrink:0; accent-color:var(--green); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+    font-weight:800; font-size:.92rem; padding:.9rem 1.4rem; border-radius:8px;
+    border:none; cursor:pointer; width:100%; transition:transform .12s ease, filter .12s ease;
+  }
+  .btn:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-primary{ background:var(--green); color:#06210f; }
+  .btn-ghost{ background:var(--panel-2); color:var(--text); border:1px solid var(--line); margin-top:.7rem; }
+
+  .erro-msg{ color:var(--red); font-size:.82rem; margin-bottom:1rem; min-height:1.1em; }
+
+  .assinatura-ok .icone{ color:var(--green); }
+  .assinatura-existente .icone{ color:var(--amber); }
+
+  .footer-nota{ text-align:center; font-size:.72rem; color:var(--muted); margin-top:1.4rem; }
+
+  @media print{
+    body{ background:#fff; color:#000; padding:0; }
+    .card{ border:1px solid #ccc; }
+    .no-print{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="ball"></div>
+      <div>
+        <div class="brand">Escolinha Nova Geração</div>
+        <div class="sub">Contrato digital de prestação de serviços</div>
+      </div>
+    </div>
+
+    <div id="carregando" class="card estado">
+      <div class="icone">⏳</div>
+      <h2>Carregando contrato...</h2>
+      <p>Só um instante.</p>
+    </div>
+
+    <div id="erroEstado" class="card estado hidden">
+      <div class="icone">⚠️</div>
+      <h2 id="erroTitulo">Não encontramos esse contrato</h2>
+      <p id="erroTexto">Confira se o link enviado pelo WhatsApp está completo, ou peça um novo link para a secretaria.</p>
+    </div>
+
+    <div id="jaAssinadoEstado" class="card estado assinatura-existente hidden">
+      <div class="icone">✔️</div>
+      <h2>Este contrato já foi assinado</h2>
+      <p id="jaAssinadoTexto"></p>
+    </div>
+
+    <div id="assinadoAgoraEstado" class="card estado assinatura-ok hidden">
+      <div class="icone">✅</div>
+      <h2>Contrato assinado com sucesso!</h2>
+      <p id="assinadoAgoraTexto"></p>
+      <button class="btn btn-ghost no-print" style="margin-top:1.2rem;" onclick="window.print()">Salvar / imprimir comprovante</button>
+    </div>
+
+    <div id="conteudo" class="hidden">
+      <div class="card">
+        <div class="resumo">
+          <div class="item"><div class="lbl">Atleta</div><div class="val" id="rNome">—</div></div>
+          <div class="item"><div class="lbl">Responsável</div><div class="val" id="rResponsavel">—</div></div>
+          <div class="item"><div class="lbl">Unidade</div><div class="val" id="rUnidade">—</div></div>
+          <div class="item"><div class="lbl">Mensalidade</div><div class="val" id="rValor">—</div></div>
+          <div class="item"><div class="lbl">Início da matrícula</div><div class="val" id="rInicio">—</div></div>
+          <div class="item"><div class="lbl">Vencimento</div><div class="val" id="rVencimento">—</div></div>
+        </div>
+
+        <div class="contrato-texto" id="textoContrato"><!-- preenchido via JS --></div>
+
+        <div class="aviso-modelo">
+          Este é um modelo padrão de contrato, gerado automaticamente para facilitar a matrícula. A Escolinha Nova Geração pode revisar ou atualizar este texto a qualquer momento junto ao responsável pelo painel administrativo.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:1.05rem; margin-bottom:1.1rem;">Assinatura digital</h2>
+        <p class="erro-msg" id="formErro"></p>
+        <div class="form-row">
+          <label for="fNome">Nome completo do responsável</label>
+          <input type="text" id="fNome" placeholder="Digite seu nome completo" autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="fCpf">CPF do responsável (opcional)</label>
+          <input type="text" id="fCpf" placeholder="000.000.000-00" autocomplete="off">
+        </div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="fConcordo">
+          <span>Li e concordo com os termos do contrato acima, e confirmo que sou o(a) responsável legal pelo(a) atleta.</span>
+        </label>
+        <button class="btn btn-primary" id="btnAssinar">Assinar contrato digitalmente</button>
+      </div>
+    </div>
+
+    <div class="footer-nota">Escolinha Nova Geração &middot; Dúvidas: fale com a secretária Vanessa, (69) 9 9380-1797</div>
+  </div>
+
+<script>
+  const API_CONTRATO = "/.netlify/functions/contrato";
+
+  const params = new URLSearchParams(window.location.search);
+  const alunoId = params.get('id');
+
+  const telas = {
+    carregando: document.getElementById('carregando'),
+    erro: document.getElementById('erroEstado'),
+    jaAssinado: document.getElementById('jaAssinadoEstado'),
+    assinadoAgora: document.getElementById('assinadoAgoraEstado'),
+    conteudo: document.getElementById('conteudo'),
+  };
+
+  function mostrarTela(nome){
+    Object.values(telas).forEach(el => el.classList.add('hidden'));
+    telas[nome].classList.remove('hidden');
+  }
+
+  function formatarDataBr(dataIso){
+    if (!dataIso) return '—';
+    const [ano, mes, dia] = dataIso.split('-');
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  function formatarMoeda(v){
+    if (v === undefined || v === null || v === '') return '—';
+    return "R$" + Number(v).toFixed(2).replace('.', ',');
+  }
+
+  function formatarDataHora(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function montarTextoContrato(aluno){
+    const valorTxt = formatarMoeda(aluno.valor);
+    const vencimentoTxt = aluno.vencimento ? `todo dia ${aluno.vencimento}` : 'a combinar';
+    return `
+      <h3>1. Objeto</h3>
+      <p>Este contrato formaliza a matrícula do(a) atleta <b>${aluno.nome}</b>, sob responsabilidade de <b>${aluno.responsavel}</b>, nas atividades de futebol da <b>Escolinha Nova Geração</b>, unidade <b>${aluno.unidade}</b>.</p>
+
+      <h3>2. Mensalidade</h3>
+      <p>O valor da mensalidade é de <b>${valorTxt}</b>, com vencimento <b>${vencimentoTxt}</b>. O pagamento é feito via PIX, conforme dados enviados pela secretaria a cada cobrança.</p>
+
+      <h3>3. Frequência e participação</h3>
+      <ul>
+        <li>O atleta precisa estar com a mensalidade em dia para participar dos treinos.</li>
+        <li>Faltas não justificadas não geram desconto ou compensação na mensalidade.</li>
+      </ul>
+
+      <h3>4. Cancelamento</h3>
+      <p>O responsável pode cancelar a matrícula a qualquer momento, entrando em contato com a secretaria (Vanessa, (69) 9 9380-1797). Mensalidades já vencidas até a data do cancelamento continuam devidas.</p>
+
+      <h3>5. Uso de imagem</h3>
+      <p>O responsável autoriza o uso de fotos e vídeos do atleta durante treinos, jogos e eventos da escolinha para divulgação nas redes sociais oficiais da Escolinha Nova Geração, sem fins comerciais externos.</p>
+
+      <h3>6. Riscos da atividade física</h3>
+      <p>O responsável declara estar ciente de que a prática esportiva envolve riscos inerentes de lesões, e que a escolinha adota as medidas de segurança e supervisão cabíveis durante as atividades.</p>
+
+      <h3>7. Aceite digital</h3>
+      <p>Ao preencher o nome completo, marcar a caixa de concordância e clicar em "Assinar contrato digitalmente" abaixo, o responsável confirma a leitura e concordância com todos os termos acima, com validade de assinatura eletrônica entre as partes.</p>
+    `;
+  }
+
+  let alunoAtual = null;
+
+  async function carregar(){
+    if (!alunoId){
+      document.getElementById('erroTitulo').textContent = "Link incompleto";
+      document.getElementById('erroTexto').textContent = "Esse link de contrato está sem os dados do atleta. Peça para a secretaria reenviar o link pelo WhatsApp.";
+      mostrarTela('erro');
+      return;
+    }
+    try {
+      const resp = await fetch(`${API_CONTRATO}?id=${encodeURIComponent(alunoId)}`);
+      if (resp.status === 404){
+        document.getElementById('erroTitulo').textContent = "Não encontramos esse contrato";
+        document.getElementById('erroTexto').textContent = "Confira se o link enviado pelo WhatsApp está completo, ou peça um novo link para a secretaria.";
+        mostrarTela('erro');
+        return;
+      }
+      if (!resp.ok) throw new Error('status ' + resp.status);
+      const aluno = await resp.json();
+      alunoAtual = aluno;
+
+      document.getElementById('rNome').textContent = aluno.nome || '—';
+      document.getElementById('rResponsavel').textContent = aluno.responsavel || '—';
+      document.getElementById('rUnidade').textContent = aluno.unidade || '—';
+      document.getElementById('rValor').textContent = formatarMoeda(aluno.valor);
+      document.getElementById('rInicio').textContent = formatarDataBr(aluno.dataInicio);
+      document.getElementById('rVencimento').textContent = aluno.vencimento ? `Dia ${aluno.vencimento}` : '—';
+      document.getElementById('textoContrato').innerHTML = montarTextoContrato(aluno);
+
+      if (aluno.contratoAssinado && aluno.assinatura){
+        document.getElementById('jaAssinadoTexto').textContent =
+          `Assinado por ${aluno.assinatura.nome} em ${formatarDataHora(aluno.assinatura.dataHora)}.`;
+        mostrarTela('jaAssinado');
+        return;
+      }
+
+      document.getElementById('fNome').value = aluno.responsavel || '';
+      mostrarTela('conteudo');
+    } catch (err) {
+      document.getElementById('erroTitulo').textContent = "Não conseguimos carregar o contrato agora";
+      document.getElementById('erroTexto').textContent = "Verifique sua conexão com a internet e tente abrir o link novamente em alguns instantes.";
+      mostrarTela('erro');
+    }
+  }
+
+  document.getElementById('btnAssinar').addEventListener('click', async () => {
+    const nome = document.getElementById('fNome').value.trim();
+    const cpf = document.getElementById('fCpf').value.trim();
+    const concordo = document.getElementById('fConcordo').checked;
+    const erroEl = document.getElementById('formErro');
+    erroEl.textContent = '';
+
+    if (nome.length < 5){
+      erroEl.textContent = "Digite seu nome completo.";
+      return;
+    }
+    if (!concordo){
+      erroEl.textContent = "É preciso marcar que você leu e concorda com os termos.";
+      return;
+    }
+
+    const btn = document.getElementById('btnAssinar');
+    btn.disabled = true;
+    btn.textContent = "Assinando...";
+
+    try {
+      const resp = await fetch(API_CONTRATO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: alunoId, nomeAssinante: nome, cpf })
+      });
+      const dados = await resp.json();
+
+      if (resp.status === 409){
+        document.getElementById('jaAssinadoTexto').textContent =
+          `Assinado por ${dados.assinatura.nome} em ${formatarDataHora(dados.assinatura.dataHora)}.`;
+        mostrarTela('jaAssinado');
+        return;
+      }
+      if (!resp.ok) throw new Error(dados.erro || 'Falha ao assinar.');
+
+      document.getElementById('assinadoAgoraTexto').textContent =
+        `${dados.assinatura.nome}, seu contrato foi registrado em ${formatarDataHora(dados.assinatura.dataHora)}. A secretaria já pode ver a assinatura no painel.`;
+      mostrarTela('assinadoAgora');
+    } catch (err) {
+      erroEl.textContent = "Não conseguimos registrar sua assinatura agora. Verifique a internet e tente de novo.";
+      btn.disabled = false;
+      btn.textContent = "Assinar contrato digitalmente";
+    }
+  });
+
+  carregar();
+</script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin | Nova Geração F.C.</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121110; --panel:#1D1A12; --panel-2:#242017; --yellow:#FFC700; --yellow-deep:#C99400;
+    --ink:#12100A; --paper:#F7F3E6; --muted:#B6AF98; --line:rgba(247,243,230,.14); --red:#E7402B; --green:#2FA85B;
+    --display:'Anton', sans-serif; --body:'Manrope', sans-serif; --mono:'JetBrains Mono', monospace;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:var(--bg); color:var(--paper); font-family:var(--body); line-height:1.55; min-height:100vh; }
+  h1,h2{ font-family:var(--display); font-weight:400; text-transform:uppercase; letter-spacing:.01em; }
+  .wrap{ width:min(980px, 100% - 2.4rem); margin-inline:auto; }
+  a{ color:var(--yellow); }
+  input,select,textarea{ font-family:var(--body); background:var(--bg); color:var(--paper); border:1.5px solid var(--line); border-radius:8px; padding:.65rem .8rem; font-size:.9rem; width:100%; }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--yellow); }
+  label{ display:block; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--yellow); margin-bottom:.35rem; }
+  .field{ margin-bottom:1rem; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+  .btn{ display:inline-flex; align-items:center; gap:.5rem; font-weight:800; font-size:.85rem; padding:.75rem 1.3rem; border-radius:8px; border:2px solid transparent; cursor:pointer; }
+  .btn-yellow{ background:var(--yellow); color:var(--ink); }
+  .btn-outline{ background:transparent; border-color:var(--line); color:var(--paper); }
+  .btn-outline:hover{ border-color:var(--yellow); color:var(--yellow); }
+  .btn-red{ background:transparent; border-color:var(--red); color:var(--red); font-size:.76rem; padding:.45rem .8rem; }
+  .btn-sm{ font-size:.76rem; padding:.5rem .9rem; }
+
+  /* login */
+  #loginScreen{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; }
+  .login-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:2.4rem; width:100%; max-width:380px; text-align:center; }
+  .login-card img{ width:64px; margin:0 auto 1rem; }
+  .login-card h1{ font-size:1.6rem; margin-bottom:.4rem; }
+  .login-card p{ color:var(--muted); font-size:.85rem; margin-bottom:1.6rem; }
+  .login-error{ color:var(--red); font-size:.82rem; margin-top:.7rem; min-height:1.2em; }
+
+  /* admin shell */
+  #adminScreen{ display:none; }
+  .admin-top{ position:sticky; top:0; z-index:20; background:rgba(18,17,16,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:1rem 0; }
+  .admin-top .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .admin-top h1{ font-size:1.1rem; }
+  .admin-actions{ display:flex; gap:.6rem; flex-wrap:wrap; }
+  .save-status{ font-family:var(--mono); font-size:.74rem; color:var(--green); min-height:1.4em; }
+
+  .panel{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:1.8rem; margin:1.6rem 0; }
+  .panel h2{ font-size:1.15rem; margin-bottom:.3rem; }
+  .panel .desc{ color:var(--muted); font-size:.83rem; margin-bottom:1.3rem; }
+
+  .list-item{ background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:1.1rem; margin-bottom:1rem; position:relative; }
+  .list-item .list-item-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:.8rem; }
+  .list-item .list-item-head span{ font-family:var(--mono); font-size:.72rem; color:var(--muted); text-transform:uppercase; }
+
+  .produto-edit{ display:grid; grid-template-columns:120px 1fr; gap:1.2rem; align-items:start; }
+  .produto-thumb{ width:120px; height:90px; object-fit:cover; border-radius:8px; border:1px solid var(--line); background:var(--bg); }
+  .file-btn{ display:inline-block; margin-top:.5rem; font-size:.72rem; }
+
+  .hint{ font-size:.76rem; color:var(--muted); margin-top:.3rem; }
+  footer.admin-footer{ text-align:center; padding:2.5rem 0; color:var(--muted); font-size:.8rem; }
+
+  @media (max-width:680px){ .row2, .row3{ grid-template-columns:1fr; } .produto-edit{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <img src="assets/logo.webp" alt="">
+      <h1>Painel Admin</h1>
+      <p>Nova Geração F.C. — acesso restrito à coordenação.</p>
+      <div class="field" style="text-align:left">
+        <label for="senhaInput">Senha</label>
+        <input type="password" id="senhaInput" placeholder="Digite a senha" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-yellow" style="width:100%; justify-content:center">Entrar</button>
+      <div class="login-error" id="loginError"></div>
+      <p class="hint">Senha padrão de fábrica: <strong>novageracao2026</strong> — troque assim que entrar, em Segurança.</p>
+    </form>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminScreen">
+    <div class="admin-top">
+      <div class="wrap">
+        <h1>Painel Admin · Nova Geração F.C.</h1>
+        <div class="admin-actions">
+          <span class="save-status" id="saveStatus"></span>
+          <a class="btn btn-outline btn-sm" href="index.html" target="_blank">Ver site</a>
+          <button class="btn btn-outline btn-sm" id="logoutBtn">Sair</button>
+          <button class="btn btn-yellow btn-sm" id="downloadBtn">Baixar config.js atualizado</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+
+      <div class="panel" style="margin-top:1.8rem; background:#241d10; border-color:#3a2d0f;">
+        <h2 style="font-size:1rem;">Como funciona</h2>
+        <p class="desc" style="margin-bottom:0;">
+          Este site é um arquivo estático (sem servidor próprio). Suas edições aqui ficam salvas automaticamente
+          <strong>neste navegador</strong>, então clicando em "Ver site" você já visualiza o resultado. Para a mudança
+          valer <strong>para todos os visitantes</strong>, clique em <strong>"Baixar config.js atualizado"</strong> e
+          substitua o arquivo <code>config.js</code> no seu servidor/hospedagem pelo que foi baixado (mesmo nome, mesmo lugar).
+        </p>
+      </div>
+
+      <!-- GERAL -->
+      <div class="panel">
+        <h2>Geral</h2>
+        <p class="desc">Número de WhatsApp, Instagram e escudo do time.</p>
+        <div class="row2">
+          <div class="field">
+            <label for="cfgWhatsapp">Número de WhatsApp (com DDI+DDD, só números)</label>
+            <input type="text" id="cfgWhatsapp" placeholder="556993801797">
+          </div>
+          <div class="field">
+            <label for="cfgWhatsappDisplay">WhatsApp (formato de exibição)</label>
+            <input type="text" id="cfgWhatsappDisplay" placeholder="(69) 9380-1797">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="cfgInstaUrl">Link do Instagram</label>
+            <input type="text" id="cfgInstaUrl" placeholder="https://www.instagram.com/...">
+          </div>
+          <div class="field">
+            <label for="cfgInstaHandle">@ exibido no site</label>
+            <input type="text" id="cfgInstaHandle" placeholder="@escolinha_nova_geracao_pvh_fc">
+          </div>
+        </div>
+        <div class="field">
+          <label>Escudo do time</label>
+          <img class="produto-thumb" id="logoThumb" src="assets/logo.webp" alt="">
+          <input class="file-btn" type="file" id="logoUpload" accept="image/*">
+          <p class="hint">A imagem enviada é incorporada direto no config.js — não precisa hospedar em outro lugar.</p>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="panel">
+        <h2>Destaque (placar do topo)</h2>
+        <p class="desc">Os números do placar logo abaixo do título principal.</p>
+        <div class="row3">
+          <div class="field"><label for="cfgVagas">Vagas restantes</label><input type="text" id="cfgVagas"></div>
+          <div class="field"><label for="cfgDesconto">Desconto na matrícula</label><input type="text" id="cfgDesconto"></div>
+          <div class="field"><label for="cfgValidade">Válido até</label><input type="text" id="cfgValidade"></div>
+        </div>
+      </div>
+
+      <!-- LOJA -->
+      <div class="panel">
+        <h2>Loja de uniformes</h2>
+        <p class="desc">Preços, descrições e fotos dos produtos vendidos pelo WhatsApp.</p>
+        <div id="produtosList"></div>
+        <button class="btn btn-outline btn-sm" id="addProduto" type="button">+ Adicionar produto</button>
+      </div>
+
+      <!-- TRANSMISSÃO -->
+      <div class="panel">
+        <h2>Transmissão ao vivo</h2>
+        <p class="desc">Link do vídeo/canal do YouTube incorporado no site, e a agenda de jogos.</p>
+        <div class="field">
+          <label for="cfgEmbed">Link do vídeo/live no YouTube</label>
+          <input type="text" id="cfgEmbed" placeholder="Cole aqui o link normal do YouTube (assistir, live ou compartilhar)">
+          <p class="hint" id="embedHint">Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.</p>
+        </div>
+        <div class="field">
+          <label for="cfgLegenda">Legenda abaixo do vídeo</label>
+          <input type="text" id="cfgLegenda">
+        </div>
+        <div id="jogosList" style="margin-top:1.2rem;"></div>
+        <button class="btn btn-outline btn-sm" id="addJogo" type="button">+ Adicionar jogo</button>
+      </div>
+
+      <!-- UNIDADES -->
+      <div class="panel">
+        <h2>Unidades</h2>
+        <p class="desc">Endereço, categorias e responsável de cada unidade.</p>
+        <div id="unidadesList"></div>
+        <button class="btn btn-outline btn-sm" id="addUnidade" type="button">+ Adicionar unidade</button>
+      </div>
+
+      <!-- OFERTAS -->
+      <div class="panel">
+        <h2>Ofertas e promoções</h2>
+        <div id="ofertasList"></div>
+        <button class="btn btn-outline btn-sm" id="addOferta" type="button">+ Adicionar oferta</button>
+      </div>
+
+      <!-- SEGURANÇA -->
+      <div class="panel">
+        <h2>Segurança</h2>
+        <p class="desc">Trocar a senha de acesso a este painel.</p>
+        <div class="row2">
+          <div class="field"><label for="novaSenha1">Nova senha</label><input type="password" id="novaSenha1" placeholder="Mínimo 6 caracteres"></div>
+          <div class="field"><label for="novaSenha2">Confirmar nova senha</label><input type="password" id="novaSenha2"></div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="trocarSenhaBtn" type="button">Trocar senha</button>
+        <p class="hint" id="senhaMsg"></p>
+      </div>
+
+      <div class="panel" style="text-align:center;">
+        <button class="btn btn-yellow" id="downloadBtn2">Baixar config.js atualizado</button>
+        <p class="hint">Lembre-se: baixar e substituir o arquivo no servidor é o que publica as mudanças para todo mundo.</p>
+        <button class="btn btn-red" id="resetBtn" type="button" style="margin-top:1rem;">Restaurar valores padrão (só neste navegador)</button>
+      </div>
+
+    </div>
+    <footer class="admin-footer">Painel Admin · Escolinha Nova Geração F.C.</footer>
+  </div>
+
+<script src="config.js"></script>
+<script>
+  const DEFAULTS = window.SITE_CONFIG;
+
+  function toYouTubeEmbed(url){
+    if (!url) return url;
+    if (/youtube\.com\/embed\//.test(url)) return url;
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{6,})/,
+      /[?&]v=([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/live\/([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/
+    ];
+    for (const re of patterns){
+      const m = url.match(re);
+      if (m) return `https://www.youtube.com/embed/${m[1]}`;
+    }
+    return url;
+  }
+
+  async function sha256(text){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  function loadState(){
+    try{
+      const saved = localStorage.getItem('ng_site_config');
+      if (saved) return Object.assign({}, DEFAULTS, JSON.parse(saved));
+    }catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULTS));
+  }
+  let state = loadState();
+
+  // ---------- LOGIN ----------
+  const loginScreen = document.getElementById('loginScreen');
+  const adminScreen = document.getElementById('adminScreen');
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pass = document.getElementById('senhaInput').value;
+    const hash = await sha256(pass);
+    if (hash === state.adminPasswordHash){
+      sessionStorage.setItem('ng_admin_ok', '1');
+      loginScreen.style.display = 'none';
+      adminScreen.style.display = 'block';
+      renderAll();
+    } else {
+      document.getElementById('loginError').textContent = 'Senha incorreta. Tente novamente.';
+    }
+  });
+  if (sessionStorage.getItem('ng_admin_ok') === '1'){
+    loginScreen.style.display = 'none';
+    adminScreen.style.display = 'block';
+  }
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('ng_admin_ok');
+    location.reload();
+  });
+
+  // ---------- SALVAR ----------
+  let saveTimer;
+  function persist(){
+    localStorage.setItem('ng_site_config', JSON.stringify(state));
+    const status = document.getElementById('saveStatus');
+    status.textContent = 'Salvo ✓ ' + new Date().toLocaleTimeString('pt-BR');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => status.textContent = '', 3000);
+  }
+
+  function fileToDataURL(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ---------- GERAL ----------
+  function bindSimpleField(id, path){
+    const el = document.getElementById(id);
+    el.value = path.split('.').reduce((o,k)=>o[k], state) ?? '';
+    el.addEventListener('input', () => {
+      const keys = path.split('.');
+      let obj = state;
+      for (let i=0;i<keys.length-1;i++) obj = obj[keys[i]];
+      obj[keys[keys.length-1]] = el.value;
+      persist();
+    });
+  }
+
+  function renderGeral(){
+    bindSimpleField('cfgWhatsapp', 'whatsapp');
+    bindSimpleField('cfgWhatsappDisplay', 'whatsappDisplay');
+    bindSimpleField('cfgInstaUrl', 'instagramUrl');
+    bindSimpleField('cfgInstaHandle', 'instagramHandle');
+    bindSimpleField('cfgVagas', 'hero.vagas');
+    bindSimpleField('cfgDesconto', 'hero.desconto');
+    bindSimpleField('cfgValidade', 'hero.validade');
+    bindSimpleField('cfgLegenda', 'transmissao.legenda');
+
+    const embedInput = document.getElementById('cfgEmbed');
+    const embedHint = document.getElementById('embedHint');
+    embedInput.value = state.transmissao.embedUrl || '';
+    embedInput.addEventListener('input', () => {
+      state.transmissao.embedUrl = embedInput.value;
+      persist();
+    });
+    embedInput.addEventListener('blur', () => {
+      const converted = toYouTubeEmbed(embedInput.value.trim());
+      if (converted !== embedInput.value.trim()){
+        embedInput.value = converted;
+        state.transmissao.embedUrl = converted;
+        persist();
+        embedHint.textContent = 'Link convertido automaticamente para o formato de incorporação ✓';
+        embedHint.style.color = 'var(--green)';
+      } else {
+        embedHint.textContent = 'Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.';
+        embedHint.style.color = 'var(--muted)';
+      }
+    });
+
+    document.getElementById('logoThumb').src = state.logo;
+    document.getElementById('logoUpload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      state.logo = await fileToDataURL(file);
+      document.getElementById('logoThumb').src = state.logo;
+      persist();
+    });
+  }
+
+  // ---------- listas genéricas ----------
+  function renderListSection(containerId, listKey, itemHTML, afterRenderItem){
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    state[listKey].forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'list-item';
+      div.innerHTML = `<div class="list-item-head"><span>#${i+1}</span><button type="button" class="btn btn-red" data-remove="${i}">Remover</button></div>` + itemHTML(item, i);
+      container.appendChild(div);
+      if (afterRenderItem) afterRenderItem(div, item, i);
+    });
+    container.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state[listKey].splice(Number(btn.dataset.remove), 1);
+        persist();
+        renderAll();
+      });
+    });
+  }
+
+  // ---------- PRODUTOS ----------
+  function renderProdutos(){
+    renderListSection('produtosList', 'produtos', (p) => `
+      <div class="produto-edit">
+        <div>
+          <img class="produto-thumb" src="${p.imagem}" data-thumb>
+          <input class="file-btn" type="file" accept="image/*" data-field="imagemFile">
+        </div>
+        <div>
+          <div class="row2">
+            <div class="field"><label>Nome do produto</label><input type="text" data-field="nome" value="${escapeAttr(p.nome)}"></div>
+            <div class="field"><label>Subtítulo / selo</label><input type="text" data-field="subtitulo" value="${escapeAttr(p.subtitulo||'')}"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Preço atual (R$)</label><input type="number" step="0.01" data-field="preco" value="${p.preco}"></div>
+            <div class="field"><label>Preço antigo (R$, opcional)</label><input type="number" step="0.01" data-field="precoAntigo" value="${p.precoAntigo ?? ''}"></div>
+            <div class="field"><label>Badge (ex: Poucas unidades)</label><input type="text" data-field="badge" value="${escapeAttr(p.badge||'')}"></div>
+          </div>
+          <div class="field"><label>Itens / características (um por linha)</label><textarea rows="3" data-field="itens">${(p.itens||[]).join('\n')}</textarea></div>
+        </div>
+      </div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          const field = input.dataset.field;
+          if (field === 'imagemFile'){
+            input.addEventListener('change', async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              state.produtos[i].imagem = await fileToDataURL(file);
+              div.querySelector('[data-thumb]').src = state.produtos[i].imagem;
+              persist();
+            });
+            return;
+          }
+          input.addEventListener('input', () => {
+            if (field === 'itens'){ state.produtos[i].itens = input.value.split('\n').map(s=>s.trim()).filter(Boolean); }
+            else if (field === 'preco'){ state.produtos[i].preco = parseFloat(input.value)||0; }
+            else if (field === 'precoAntigo'){ state.produtos[i].precoAntigo = input.value ? parseFloat(input.value) : null; }
+            else { state.produtos[i][field] = input.value; }
+            persist();
+          });
+        });
+      });
+  }
+  document.getElementById('addProduto').addEventListener('click', () => {
+    state.produtos.push({ id:'produto-'+Date.now(), nome:'Novo produto', subtitulo:'', preco:0, precoAntigo:null, imagem:'assets/logo.webp', badge:'', itens:[] });
+    persist(); renderAll();
+  });
+
+  // ---------- JOGOS ----------
+  function renderJogos(){
+    renderListSection('jogosList', 'jogos', (j) => `
+      <div class="row3">
+        <div class="field"><label>Data/hora</label><input type="text" data-field="data" value="${escapeAttr(j.data)}" placeholder="SÁB · 09/08 · 9h"></div>
+        <div class="field"><label>Confronto</label><input type="text" data-field="times" value="${escapeAttr(j.times)}" placeholder="Nova Geração x Time"></div>
+        <div class="field"><label>Link para assistir</label><input type="text" data-field="link" value="${escapeAttr(j.link)}" placeholder="https://..."></div>
+      </div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.jogos[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
+  }
+  document.getElementById('addJogo').addEventListener('click', () => {
+    state.jogos.push({ data:'', times:'', link:'#' });
+    persist(); renderAll();
+  });
+
+  // ---------- UNIDADES ----------
+  function renderUnidades(){
+    renderListSection('unidadesList', 'unidades', (u) => `
+      <div class="row2">
+        <div class="field"><label>Nome da unidade</label><input type="text" data-field="nome" value="${escapeAttr(u.nome)}"></div>
+        <div class="field"><label>Responsável</label><input type="text" data-field="responsavel" value="${escapeAttr(u.responsavel)}"></div>
+      </div>
+      <div class="field"><label>Endereço</label><input type="text" data-field="endereco" value="${escapeAttr(u.endereco)}"></div>
+      <div class="field"><label>Categorias e horários</label><input type="text" data-field="categorias" value="${escapeAttr(u.categorias)}"></div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.unidades[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
+  }
+  document.getElementById('addUnidade').addEventListener('click', () => {
+    state.unidades.push({ nome:'Nova unidade', endereco:'', categorias:'', responsavel:'' });
+    persist(); renderAll();
+  });
+
+  // ---------- OFERTAS ----------
+  function renderOfertas(){
+    renderListSection('ofertasList', 'ofertas', (o) => `
+      <div class="field"><label>Etiqueta (ex: Novos alunos)</label><input type="text" data-field="tag" value="${escapeAttr(o.tag)}"></div>
+      <div class="field"><label>Título</label><input type="text" data-field="titulo" value="${escapeAttr(o.titulo)}"></div>
+      <div class="field"><label>Texto</label><input type="text" data-field="texto" value="${escapeAttr(o.texto)}"></div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.ofertas[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
+  }
+  document.getElementById('addOferta').addEventListener('click', () => {
+    state.ofertas.push({ tag:'', titulo:'', texto:'' });
+    persist(); renderAll();
+  });
+
+  function escapeAttr(s){ return String(s ?? '').replace(/"/g,'&quot;'); }
+
+  function renderAll(){
+    renderGeral();
+    renderProdutos();
+    renderJogos();
+    renderUnidades();
+    renderOfertas();
+  }
+
+  // ---------- SENHA ----------
+  document.getElementById('trocarSenhaBtn').addEventListener('click', async () => {
+    const p1 = document.getElementById('novaSenha1').value;
+    const p2 = document.getElementById('novaSenha2').value;
+    const msg = document.getElementById('senhaMsg');
+    if (p1.length < 6){ msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; msg.style.color = 'var(--red)'; return; }
+    if (p1 !== p2){ msg.textContent = 'As senhas não coincidem.'; msg.style.color = 'var(--red)'; return; }
+    state.adminPasswordHash = await sha256(p1);
+    persist();
+    msg.textContent = 'Senha alterada! Baixe o config.js atualizado para que a nova senha valha em todos os navegadores.';
+    msg.style.color = 'var(--green)';
+    document.getElementById('novaSenha1').value = '';
+    document.getElementById('novaSenha2').value = '';
+  });
+
+  // ---------- DOWNLOAD config.js ----------
+  function downloadConfig(){
+    const content = `/* ============================================================
+   CONFIG.JS — Escolinha Nova Geração F.C.
+   Gerado pelo Painel Admin em ${new Date().toLocaleString('pt-BR')}
+   Substitua o config.js do seu site por este arquivo para publicar
+   as alterações para todos os visitantes.
+   ============================================================ */
+
+window.SITE_CONFIG = ${JSON.stringify(state, null, 2)};
+`;
+    const blob = new Blob([content], { type: 'text/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'config.js';
+    a.click();
+  }
+  document.getElementById('downloadBtn').addEventListener('click', downloadConfig);
+  document.getElementById('downloadBtn2').addEventListener('click', downloadConfig);
+
+  // ---------- RESET ----------
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Isso vai apagar as edições salvas neste navegador e voltar aos valores do config.js original. Continuar?')) return;
+    localStorage.removeItem('ng_site_config');
+    state = JSON.parse(JSON.stringify(DEFAULTS));
+    renderAll();
+    persist();
+  });
+</script>
+</body>
+</html>

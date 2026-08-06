@@ -1,0 +1,11 @@
+Coloque aqui dentro as imagens do site (a pasta "assets" que já existe
+no repositório GitHub wsms2ste/nova-geracao-fc):
+
+  logo.webp
+  uniforme-completo.webp
+  promo-calcao.webp
+  promo-meia.webp
+
+Elas não vieram no envio mais recente de arquivos — são as mesmas
+imagens que já estão publicadas hoje, só precisa garantir que continuem
+dentro de public/assets/ na nova estrutura de pastas.

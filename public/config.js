@@ -1,0 +1,118 @@
+/* ============================================================
+   CONFIG.JS — Escolinha Nova Geração F.C.
+   ------------------------------------------------------------
+   Este arquivo guarda TODAS as informações editáveis do site:
+   número de WhatsApp, preços, links de transmissão, jogos,
+   unidades, ofertas e fotos dos produtos.
+
+   Você não precisa mexer aqui na mão: use o Painel Admin
+   (admin.html) para editar tudo por formulário. No final,
+   o painel gera um novo config.js pronto pra baixar — é só
+   substituir este arquivo no seu site (mesmo nome, mesmo lugar)
+   e as mudanças valem pra todo mundo que visitar o site.
+   ============================================================ */
+
+window.SITE_CONFIG = {
+
+  // Senha do painel admin: hash SHA-256 da senha "novageracao2026"
+  // (troque a senha assim que possível pelo próprio painel)
+  adminPasswordHash: "10b3791f3ffaedee0be50de1144819e9ebd3de5ef4b49046b372c09e5456159f",
+
+  whatsapp: "556993801797",
+  whatsappDisplay: "(69) 9380-1797",
+
+  instagramUrl: "https://www.instagram.com/escolinha_nova_geracao_pvh_fc/",
+  instagramHandle: "@escolinha_nova_geracao_pvh_fc",
+
+  logo: "assets/logo.webp",
+
+  hero: {
+    vagas: "38",
+    desconto: "R$50",
+    validade: "15/08"
+  },
+
+  transmissao: {
+    embedUrl: "https://www.youtube.com/embed/d0kQTe1NvDY",
+    legenda: "Troque o link acima pelo vídeo ou live do canal oficial da escolinha no YouTube."
+  },
+
+  jogos: [
+    { data: "SÁB · 09/08 · 9h",  times: "Nova Geração Sub-11 x Amigos FC",      link: "#" },
+    { data: "SÁB · 16/08 · 10h", times: "Nova Geração Sub-15 x União Esporte",   link: "#" },
+    { data: "DOM · 24/08 · 9h",  times: "Nova Geração Sub-9 x Estrelinhas FC",   link: "#" }
+  ],
+
+  unidades: [
+    {
+      nome: "Centro",
+      endereco: "Rua Exemplo, 123 – Centro",
+      categorias: "Sub-7 a Sub-13 — Ter/Qui 16h · Sáb 9h",
+      responsavel: "Prof. Nome do Coordenador"
+    },
+    {
+      nome: "Zona Norte",
+      endereco: "Av. Exemplo, 456 – Zona Norte",
+      categorias: "Sub-9 a Sub-15 — Seg/Qua 17h · Sáb 10h",
+      responsavel: "Prof. Nome do Coordenador"
+    },
+    {
+      nome: "Zona Sul",
+      endereco: "Rua Exemplo, 789 – Zona Sul",
+      categorias: "Sub-11 a Sub-17 — Ter/Qui 18h · Sáb 9h",
+      responsavel: "Prof. Nome do Coordenador"
+    }
+  ],
+
+  produtos: [
+    {
+      id: "uniforme",
+      nome: "Uniforme Completo",
+      subtitulo: "Camisa + Short — personalizado",
+      preco: 140.00,
+      precoAntigo: null,
+      imagem: "assets/uniforme-completo.webp",
+      badge: "Nome e número inclusos",
+      itens: [
+        "Nome do atleta personalizado",
+        "Tecido esportivo de alta qualidade",
+        "Design exclusivo Nova Geração",
+        "Tamanhos disponíveis e encomendas sob medida"
+      ]
+    },
+    {
+      id: "calcao",
+      nome: "Calção para treino",
+      subtitulo: "Promoção por tempo limitado",
+      preco: 45.00,
+      precoAntigo: 79.99,
+      imagem: "assets/promo-calcao.webp",
+      badge: "Poucas unidades",
+      itens: [
+        "Ideal para o dia a dia de treino",
+        "Tecido leve e resistente",
+        "Escudo bordado Nova Geração"
+      ]
+    },
+    {
+      id: "meia",
+      nome: "Meia esportiva antiderrapante",
+      subtitulo: "Promoção por tempo limitado",
+      preco: 29.99,
+      precoAntigo: 45.00,
+      imagem: "assets/promo-meia.webp",
+      badge: "Poucas unidades",
+      itens: [
+        "Solado antiderrapante",
+        "Cano alto, maior proteção no treino",
+        "Confortável para jogos e treinos"
+      ]
+    }
+  ],
+
+  ofertas: [
+    { tag: "Novos alunos", titulo: "R$50 de desconto", texto: "Na matrícula feita até 15/08. Kit de boas-vindas incluso." },
+    { tag: "Indicação",    titulo: "Indique um amigo",  texto: "Você e o amigo indicado ganham 1 mês com 20% de desconto." },
+    { tag: "Irmãos",       titulo: "Desconto família",  texto: "A partir do segundo irmão matriculado, 15% off na mensalidade." }
+  ]
+};

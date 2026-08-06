@@ -1,0 +1,115 @@
+https://github.com/nessysillva23-byte/Nova-Gera-o-F.C.git
+
+
+ESCOLINHA NOVA GERAÇÃO F.C. — GUIA RÁPIDO DO SITE
+====================================================
+
+ARQUIVOS DO SITE (dentro da pasta "public")
+---------------------------------------------
+index.html    -> a página que os visitantes veem
+admin.html    -> painel de CONTEÚDO do site (preços, WhatsApp, transmissão, jogos, unidades, ofertas)
+painel.html   -> painel de ALUNOS E CONTRATOS (cadastro, cobrança, assinatura digital)
+contrato.html -> página que o responsável abre pelo link do WhatsApp para assinar o contrato
+config.js     -> onde ficam guardados preços, links, textos e fotos do site
+assets/       -> imagens (escudo, uniformes)
+
+Esses arquivos precisam ficar SEMPRE juntos, dentro da pasta "public", no
+seu servidor de hospedagem. Não renomeie nenhum arquivo. As pastas
+"netlify" e "data" (fora de "public") também precisam existir — são o que
+faz o painel.html funcionar e guardar os dados dos alunos com segurança
+(veja o README-DEPLOY.md, que é o guia técnico de publicação).
+
+
+OS DOIS PAINÉIS — QUAL USAR PARA QUÊ
+---------------------------------------
+Existem DOIS painéis diferentes, com senhas diferentes:
+
+1) admin.html — para editar o CONTEÚDO do site: WhatsApp, Instagram, preços
+   da loja, fotos dos produtos, link de transmissão ao vivo, jogos da
+   semana, unidades e ofertas.
+   Fica em: novageracao.com.br/admin.html
+   Senha inicial: novageracao2026 (troque assim que entrar!)
+
+2) painel.html — para gerenciar os ALUNOS e os CONTRATOS: cadastrar aluno,
+   marcar mensalidade paga, enviar o link do contrato pelo WhatsApp e ver
+   quem já assinou.
+   Fica em: novageracao.com.br/painel.html
+   Senha inicial: 1234 (troque assim que entrar, na própria tela do painel!)
+
+
+COMO PUBLICAR
+--------------
+1. Envie a pasta inteira (public/, netlify/, data/, netlify.toml) para o
+   repositório do GitHub conectado ao Netlify, do jeito que está — veja o
+   passo a passo técnico completo em README-DEPLOY.md.
+2. O endereço do site público será o de sempre (ex: novageracao.com.br).
+
+
+COMO EDITAR PREÇOS, LINKS E FOTOS (admin.html)
+-------------------------------------------------
+1. Acesse .../admin.html e faça login.
+2. Edite o que quiser: WhatsApp, Instagram, preços da loja, fotos dos
+   produtos, link de transmissão ao vivo, jogos da semana, unidades,
+   ofertas e a senha do painel.
+3. Toda alteração já fica salva automaticamente NESTE NAVEGADOR — clique
+   em "Ver site" para conferir como ficou.
+4. Para a alteração valer para TODOS OS VISITANTES (não só no seu
+   navegador), clique em "Baixar config.js atualizado". Isso baixa um
+   novo arquivo config.js pronto.
+5. Envie esse config.js baixado para o repositório do GitHub, dentro da
+   pasta public/, substituindo o config.js antigo (mesmo nome, mesmo
+   lugar). Pronto — o site atualiza para todo mundo.
+
+
+COMO GERENCIAR ALUNOS E CONTRATOS (painel.html)
+---------------------------------------------------
+1. Acesse .../painel.html e faça login com a senha do painel.
+2. Cadastre o aluno com os dados de matrícula (unidade, valor,
+   responsável, telefone etc.).
+3. Clique em "Contrato" na linha do aluno — abre o WhatsApp já com o link
+   de assinatura digital para enviar ao responsável.
+4. Assim que o responsável assina pelo celular, o painel mostra
+   "✔ Contrato assinado" — não precisa nada em papel.
+5. Diferente do admin.html, aqui NÃO é preciso baixar/subir arquivo: toda
+   alteração já é salva direto e aparece para toda a equipe na hora.
+
+
+SOBRE O NÚMERO DE WHATSAPP
+-----------------------------
+Já está configurado para 55 69 9380-1797 em todos os botões do site
+("Falar no WhatsApp", "Matricular", "Comprar", botões de cada unidade
+etc). Pode trocar a qualquer momento pelo admin.html, em Geral.
+
+
+SOBRE A LOJA DE UNIFORMES
+-----------------------------
+Os 3 produtos que você me passou já estão cadastrados com as fotos e
+preços das suas artes promocionais:
+- Uniforme completo (camisa + short personalizados) — R$140,00
+- Calção de treino — de R$79,99 por R$45,00
+- Meia esportiva antiderrapante — de R$45,00 por R$29,99
+
+Cada botão "Comprar pelo WhatsApp" já abre uma conversa com o nome e
+preço do produto preenchidos. Adicione, edite ou remova produtos pelo
+admin.html a qualquer momento.
+
+
+SOBRE O INSTAGRAM
+-----------------------------
+O site tem uma seção "Siga a colmeia no Instagram" com um cartão que
+leva direto para o perfil oficial:
+https://www.instagram.com/escolinha_nova_geracao_pvh_fc/
+(O Instagram não permite mostrar as fotos/posts embutidos sem login
+em sites de terceiros — por isso usamos um cartão com botão de seguir,
+que é o formato permitido e mais confiável.)
+
+
+SEGURANÇA DOS PAINÉIS
+-----------------------------
+As senhas protegem o acesso aos dois painéis, mas por ser um site sem
+servidor próprio de banco de dados tradicional, não é o mesmo nível de
+segurança de um sistema bancário — é o suficiente para impedir curiosos,
+mas não compartilhe as senhas e troque-as periodicamente (admin.html tem
+sua própria seção Segurança; a senha do painel.html se troca direto no
+código, com ajuda de quem publicou o site, já que ela precisa bater com
+uma configuração no Netlify).

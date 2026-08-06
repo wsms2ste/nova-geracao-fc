@@ -3,879 +3,526 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Administrativo | Nova Geração</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<title>Painel Admin | Nova Geração F.C.</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0F1B2E;
-    --panel: #16233A;
-    --panel-2: #1C2C46;
-    --line: #2A3B57;
-    --green: #2FBE6B;
-    --green-soft: rgba(47,190,107,.14);
-    --amber: #F2B705;
-    --amber-soft: rgba(242,183,5,.14);
-    --red: #FF5A5A;
-    --red-soft: rgba(255,90,90,.14);
-    --text: #EAF0FA;
-    --muted: #93A2BE;
-    --radius: 12px;
-    --display: 'Baloo 2', sans-serif;
-    --body: 'Nunito', sans-serif;
-    --mono: 'Roboto Mono', monospace;
+    --bg:#121110; --panel:#1D1A12; --panel-2:#242017; --yellow:#FFC700; --yellow-deep:#C99400;
+    --ink:#12100A; --paper:#F7F3E6; --muted:#B6AF98; --line:rgba(247,243,230,.14); --red:#E7402B; --green:#2FA85B;
+    --display:'Anton', sans-serif; --body:'Manrope', sans-serif; --mono:'JetBrains Mono', monospace;
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
-  body{
-    background:var(--bg); color:var(--text); font-family:var(--body);
-    line-height:1.55; -webkit-font-smoothing:antialiased; min-height:100vh;
-  }
-  h1,h2,h3{ font-family:var(--display); }
-  button, input, select{ font-family:var(--body); }
-  :focus-visible{ outline:2px solid var(--amber); outline-offset:2px; }
-  .hidden{ display:none !important; }
+  body{ background:var(--bg); color:var(--paper); font-family:var(--body); line-height:1.55; min-height:100vh; }
+  h1,h2{ font-family:var(--display); font-weight:400; text-transform:uppercase; letter-spacing:.01em; }
+  .wrap{ width:min(980px, 100% - 2.4rem); margin-inline:auto; }
+  a{ color:var(--yellow); }
+  input,select,textarea{ font-family:var(--body); background:var(--bg); color:var(--paper); border:1.5px solid var(--line); border-radius:8px; padding:.65rem .8rem; font-size:.9rem; width:100%; }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--yellow); }
+  label{ display:block; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--yellow); margin-bottom:.35rem; }
+  .field{ margin-bottom:1rem; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; }
+  .btn{ display:inline-flex; align-items:center; gap:.5rem; font-weight:800; font-size:.85rem; padding:.75rem 1.3rem; border-radius:8px; border:2px solid transparent; cursor:pointer; }
+  .btn-yellow{ background:var(--yellow); color:var(--ink); }
+  .btn-outline{ background:transparent; border-color:var(--line); color:var(--paper); }
+  .btn-outline:hover{ border-color:var(--yellow); color:var(--yellow); }
+  .btn-red{ background:transparent; border-color:var(--red); color:var(--red); font-size:.76rem; padding:.45rem .8rem; }
+  .btn-sm{ font-size:.76rem; padding:.5rem .9rem; }
 
-  /* ---------- login ---------- */
-  #loginScreen{
-    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1.5rem;
-    background:radial-gradient(circle at 50% 0%, rgba(47,190,107,.14), transparent 55%);
-  }
-  .login-card{
-    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-    padding:2.4rem; width:100%; max-width:380px; text-align:center;
-  }
-  .login-card .ball{ width:44px; height:44px; border-radius:50%; margin:0 auto 1rem; background:radial-gradient(circle at 32% 30%, #fff, var(--bg) 75%); border:2px solid var(--text); }
-  .login-card h1{ font-size:1.4rem; margin-bottom:.3rem; }
-  .login-card p.muted{ font-size:.85rem; color:var(--muted); margin-bottom:1.6rem; }
-  .login-card input{
-    width:100%; padding:.85rem 1rem; border-radius:8px; border:1.5px solid var(--line);
-    background:var(--panel-2); color:var(--text); font-size:.95rem; margin-bottom:.9rem; text-align:center;
-    letter-spacing:.1em;
-  }
-  .login-card input:focus{ border-color:var(--green); outline:none; }
-  .login-error{ color:var(--red); font-size:.82rem; margin-bottom:.9rem; min-height:1.1em; }
-  .btn{
-    display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-    font-weight:800; font-size:.9rem; padding:.85rem 1.4rem; border-radius:8px;
-    border:none; cursor:pointer; transition:transform .12s ease, filter .12s ease;
-  }
-  .btn:hover{ filter:brightness(1.08); transform:translateY(-1px); }
-  .btn-block{ width:100%; }
-  .btn-primary{ background:var(--green); color:#06210f; }
-  .btn-ghost{ background:var(--panel-2); color:var(--text); border:1px solid var(--line); }
-  .btn-sm{ padding:.5rem .8rem; font-size:.78rem; }
-  .btn-danger{ background:var(--red-soft); color:var(--red); border:1px solid var(--red); }
-  .btn-wa{ background:#22c35e; color:#08210f; }
+  /* login */
+  #loginScreen{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; }
+  .login-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:2.4rem; width:100%; max-width:380px; text-align:center; }
+  .login-card img{ width:64px; margin:0 auto 1rem; }
+  .login-card h1{ font-size:1.6rem; margin-bottom:.4rem; }
+  .login-card p{ color:var(--muted); font-size:.85rem; margin-bottom:1.6rem; }
+  .login-error{ color:var(--red); font-size:.82rem; margin-top:.7rem; min-height:1.2em; }
 
-  /* ---------- app shell ---------- */
-  #app{ min-height:100vh; }
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:1.1rem 1.6rem; border-bottom:1px solid var(--line); background:var(--panel);
-    position:sticky; top:0; z-index:20; flex-wrap:wrap; gap:1rem;
-  }
-  .topbar .brand{ display:flex; align-items:center; gap:.6rem; font-family:var(--display); font-weight:800; font-size:1.15rem; }
-  .brand .ball{ width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 32% 30%, #fff, var(--bg) 75%); border:2px solid var(--text); }
-  .topbar .sub{ font-size:.76rem; color:var(--muted); }
+  /* admin shell */
+  #adminScreen{ display:none; }
+  .admin-top{ position:sticky; top:0; z-index:20; background:rgba(18,17,16,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:1rem 0; }
+  .admin-top .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .admin-top h1{ font-size:1.1rem; }
+  .admin-actions{ display:flex; gap:.6rem; flex-wrap:wrap; }
+  .save-status{ font-family:var(--mono); font-size:.74rem; color:var(--green); min-height:1.4em; }
 
-  .shell{ padding:1.8rem 1.6rem 3rem; max-width:1180px; margin:0 auto; }
+  .panel{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:1.8rem; margin:1.6rem 0; }
+  .panel h2{ font-size:1.15rem; margin-bottom:.3rem; }
+  .panel .desc{ color:var(--muted); font-size:.83rem; margin-bottom:1.3rem; }
 
-  /* ---------- cards resumo ---------- */
-  .summary{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.6rem; }
-  .sum-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.3rem 1.4rem; }
-  .sum-label{ font-size:.74rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:.5rem; }
-  .sum-num{ font-family:var(--mono); font-size:1.7rem; font-weight:700; }
-  .sum-num.green{ color:var(--green); }
-  .sum-num.amber{ color:var(--amber); }
-  .sum-num.red{ color:var(--red); }
+  .list-item{ background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:1.1rem; margin-bottom:1rem; position:relative; }
+  .list-item .list-item-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:.8rem; }
+  .list-item .list-item-head span{ font-family:var(--mono); font-size:.72rem; color:var(--muted); text-transform:uppercase; }
 
-  .alert-bar{
-    display:none; align-items:center; gap:.7rem;
-    background:var(--red-soft); border:1px solid var(--red); color:#ffd6d6;
-    border-radius:var(--radius); padding:.9rem 1.2rem; margin-bottom:1.6rem; font-size:.88rem;
-  }
-  .alert-bar.show{ display:flex; }
-  .alert-bar b{ color:var(--red); }
+  .produto-edit{ display:grid; grid-template-columns:120px 1fr; gap:1.2rem; align-items:start; }
+  .produto-thumb{ width:120px; height:90px; object-fit:cover; border-radius:8px; border:1px solid var(--line); background:var(--bg); }
+  .file-btn{ display:inline-block; margin-top:.5rem; font-size:.72rem; }
 
-  /* ---------- toolbar ---------- */
-  .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.2rem; flex-wrap:wrap; }
-  .filters{ display:flex; gap:.6rem; flex-wrap:wrap; }
-  .filters select, .filters input{
-    padding:.6rem .8rem; border-radius:8px; border:1px solid var(--line);
-    background:var(--panel); color:var(--text); font-size:.85rem;
-  }
-  .filters select:focus, .filters input:focus{ border-color:var(--green); outline:none; }
+  .hint{ font-size:.76rem; color:var(--muted); margin-top:.3rem; }
+  footer.admin-footer{ text-align:center; padding:2.5rem 0; color:var(--muted); font-size:.8rem; }
 
-  /* ---------- tabela ---------- */
-  .table-wrap{
-    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-    overflow-x:auto;
-  }
-  table{ width:100%; border-collapse:collapse; min-width:820px; }
-  th{
-    text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em;
-    color:var(--muted); padding:.9rem 1rem; border-bottom:1px solid var(--line);
-  }
-  td{ padding:.9rem 1rem; border-bottom:1px solid var(--line); font-size:.87rem; vertical-align:middle; }
-  tr:last-child td{ border-bottom:none; }
-  .aluno-nome{ font-weight:700; }
-  .aluno-sub{ font-size:.76rem; color:var(--muted); }
-  .status-pill{
-    display:inline-flex; align-items:center; gap:.4rem; font-size:.74rem; font-weight:700;
-    padding:.3rem .7rem; border-radius:50px; text-transform:uppercase; letter-spacing:.03em;
-  }
-  .status-pago{ background:var(--green-soft); color:var(--green); }
-  .status-atrasado{ background:var(--red-soft); color:var(--red); }
-  .status-pendente{ background:var(--amber-soft); color:var(--amber); }
-  .badge-assinado{ margin-top:.35rem; font-size:.72rem; font-weight:700; color:var(--green); }
-  .badge-pendente-contrato{ margin-top:.35rem; font-size:.72rem; color:var(--muted); }
-  .sync-pill{
-    display:inline-flex; align-items:center; gap:.4rem; font-size:.72rem; font-weight:700;
-    padding:.35rem .7rem; border-radius:50px; background:var(--panel-2); border:1px solid var(--line); color:var(--muted);
-  }
-  .sync-pill .dot{ width:7px; height:7px; border-radius:50%; background:var(--muted); }
-  .sync-pill.ok .dot{ background:var(--green); }
-  .sync-pill.ok{ color:var(--green); }
-  .sync-pill.off .dot{ background:var(--red); }
-  .sync-pill.off{ color:var(--red); }
-  .row-actions{ display:flex; gap:.4rem; flex-wrap:wrap; }
-  .empty-state{ text-align:center; padding:3rem 1rem; color:var(--muted); }
-
-  /* ---------- modal ---------- */
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(6,12,22,.7); z-index:100;
-    display:flex; align-items:center; justify-content:center; padding:1.5rem;
-  }
-  .modal{
-    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
-    padding:1.8rem; width:100%; max-width:460px; max-height:90vh; overflow-y:auto;
-  }
-  .modal h2{ font-size:1.15rem; margin-bottom:1.2rem; }
-  .form-row{ margin-bottom:1rem; }
-  .form-row label{ display:block; font-size:.78rem; font-weight:700; margin-bottom:.35rem; color:var(--muted); }
-  .form-row input, .form-row select{
-    width:100%; padding:.7rem .85rem; border-radius:8px; border:1px solid var(--line);
-    background:var(--panel-2); color:var(--text); font-size:.88rem;
-  }
-  .form-row input:focus, .form-row select:focus{ border-color:var(--green); outline:none; }
-  .form-two{ display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
-  .modal-actions{ display:flex; gap:.7rem; margin-top:1.4rem; }
-  .modal-actions .btn{ flex:1; }
-
-  .toast{
-    position:fixed; bottom:1.4rem; left:50%; transform:translateX(-50%);
-    background:var(--panel-2); border:1px solid var(--line); color:var(--text);
-    padding:.8rem 1.3rem; border-radius:8px; font-size:.85rem; z-index:200;
-    opacity:0; transition:opacity .25s ease;
-  }
-  .toast.show{ opacity:1; }
-
-  .loading-row{ text-align:center; padding:2.4rem; color:var(--muted); font-size:.88rem; }
-
-  @media (max-width:900px){
-    .summary{ grid-template-columns:repeat(2,1fr); }
-  }
-  @media (max-width:600px){
-    .summary{ grid-template-columns:1fr; }
-    .form-two{ grid-template-columns:1fr; }
-    .topbar{ padding:1rem; }
-    .shell{ padding:1.4rem 1rem 2.5rem; }
-  }
+  @media (max-width:680px){ .row2, .row3{ grid-template-columns:1fr; } .produto-edit{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 
-  <!-- TELA DE LOGIN -->
+  <!-- LOGIN -->
   <div id="loginScreen">
-    <div class="login-card">
-      <div class="ball"></div>
-      <h1>Painel Nova Geração</h1>
-      <p class="muted">Acesso restrito à coordenação</p>
-      <input type="password" id="senhaInput" placeholder="1234" autocomplete="off">
-      <p class="login-error" id="loginError"></p>
-      <button class="btn btn-primary btn-block" id="btnEntrar">Entrar</button>
-    </div>
+    <form class="login-card" id="loginForm">
+      <img src="assets/logo.webp" alt="">
+      <h1>Painel Admin</h1>
+      <p>Nova Geração F.C. — acesso restrito à coordenação.</p>
+      <div class="field" style="text-align:left">
+        <label for="senhaInput">Senha</label>
+        <input type="password" id="senhaInput" placeholder="Digite a senha" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-yellow" style="width:100%; justify-content:center">Entrar</button>
+      <div class="login-error" id="loginError"></div>
+      <p class="hint">Senha padrão de fábrica: <strong>novageracao2026</strong> — troque assim que entrar, em Segurança.</p>
+    </form>
   </div>
 
-  <!-- APP -->
-  <div id="app" class="hidden">
-    <div class="topbar">
-      <div>
-        <div class="brand">Painel Nova Geração</div>
-        <div class="sub">Controle de matrículas e mensalidades</div>
-      </div>
-      <div style="display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;">
-        <span class="sync-pill" id="syncPill"><span class="dot"></span><span id="syncTexto">Sincronizando...</span></span>
-        <button class="btn btn-ghost btn-sm" id="btnNovoAluno">+ Novo aluno</button>
-        <button class="btn btn-ghost btn-sm" id="btnSair">Sair</button>
+  <!-- ADMIN -->
+  <div id="adminScreen">
+    <div class="admin-top">
+      <div class="wrap">
+        <h1>Painel Admin · Nova Geração F.C.</h1>
+        <div class="admin-actions">
+          <span class="save-status" id="saveStatus"></span>
+          <a class="btn btn-outline btn-sm" href="index.html" target="_blank">Ver site</a>
+          <button class="btn btn-outline btn-sm" id="logoutBtn">Sair</button>
+          <button class="btn btn-yellow btn-sm" id="downloadBtn">Baixar config.js atualizado</button>
+        </div>
       </div>
     </div>
 
-    <div class="shell">
+    <div class="wrap">
 
-      <div class="summary">
-        <div class="sum-card">
-          <div class="sum-label">Total de alunos</div>
-          <div class="sum-num" id="sumTotal">0</div>
+      <div class="panel" style="margin-top:1.8rem; background:#241d10; border-color:#3a2d0f;">
+        <h2 style="font-size:1rem;">Como funciona</h2>
+        <p class="desc" style="margin-bottom:0;">
+          Este site é um arquivo estático (sem servidor próprio). Suas edições aqui ficam salvas automaticamente
+          <strong>neste navegador</strong>, então clicando em "Ver site" você já visualiza o resultado. Para a mudança
+          valer <strong>para todos os visitantes</strong>, clique em <strong>"Baixar config.js atualizado"</strong> e
+          substitua o arquivo <code>config.js</code> no seu servidor/hospedagem pelo que foi baixado (mesmo nome, mesmo lugar).
+        </p>
+      </div>
+
+      <!-- GERAL -->
+      <div class="panel">
+        <h2>Geral</h2>
+        <p class="desc">Número de WhatsApp, Instagram e escudo do time.</p>
+        <div class="row2">
+          <div class="field">
+            <label for="cfgWhatsapp">Número de WhatsApp (com DDI+DDD, só números)</label>
+            <input type="text" id="cfgWhatsapp" placeholder="556993801797">
+          </div>
+          <div class="field">
+            <label for="cfgWhatsappDisplay">WhatsApp (formato de exibição)</label>
+            <input type="text" id="cfgWhatsappDisplay" placeholder="(69) 9380-1797">
+          </div>
         </div>
-        <div class="sum-card">
-          <div class="sum-label">Mensalidades pagas (mês)</div>
-          <div class="sum-num green" id="sumPagas">0</div>
+        <div class="row2">
+          <div class="field">
+            <label for="cfgInstaUrl">Link do Instagram</label>
+            <input type="text" id="cfgInstaUrl" placeholder="https://www.instagram.com/...">
+          </div>
+          <div class="field">
+            <label for="cfgInstaHandle">@ exibido no site</label>
+            <input type="text" id="cfgInstaHandle" placeholder="@escolinha_nova_geracao_pvh_fc">
+          </div>
         </div>
-        <div class="sum-card">
-          <div class="sum-label">Em atraso</div>
-          <div class="sum-num red" id="sumAtrasadas">0</div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-label">Valor em atraso</div>
-          <div class="sum-num amber" id="sumValorAtraso">R$0</div>
+        <div class="field">
+          <label>Escudo do time</label>
+          <img class="produto-thumb" id="logoThumb" src="assets/logo.webp" alt="">
+          <input class="file-btn" type="file" id="logoUpload" accept="image/*">
+          <p class="hint">A imagem enviada é incorporada direto no config.js — não precisa hospedar em outro lugar.</p>
         </div>
       </div>
 
-      <div class="alert-bar" id="alertBar">
-        <span><b>Atenção:</b> <b id="alertCount">0</b> aluno(s) com mensalidade em atraso. Use o botão "Cobrar" na tabela pra avisar pelo WhatsApp.</span>
-      </div>
-
-      <div class="toolbar">
-        <div class="filters">
-          <input type="text" id="filtroNome" placeholder="Buscar aluno...">
-          <select id="filtroUnidade">
-            <option value="">Todas as unidades</option>
-            <option>Centro</option>
-            <option>Zona Norte</option>
-            <option>Zona Sul</option>
-          </select>
-          <select id="filtroStatus">
-            <option value="">Todos os status</option>
-            <option value="Pago">Pago</option>
-            <option value="Atrasado">Atrasado</option>
-            <option value="Pendente">Pendente</option>
-          </select>
+      <!-- HERO -->
+      <div class="panel">
+        <h2>Destaque (placar do topo)</h2>
+        <p class="desc">Os números do placar logo abaixo do título principal.</p>
+        <div class="row3">
+          <div class="field"><label for="cfgVagas">Vagas restantes</label><input type="text" id="cfgVagas"></div>
+          <div class="field"><label for="cfgDesconto">Desconto na matrícula</label><input type="text" id="cfgDesconto"></div>
+          <div class="field"><label for="cfgValidade">Válido até</label><input type="text" id="cfgValidade"></div>
         </div>
-        <button class="btn btn-ghost btn-sm" id="btnNovoMes">Iniciar novo mês</button>
       </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Aluno</th>
-              <th>Unidade</th>
-              <th>Responsável / contato</th>
-              <th>Mensalidade</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaAlunos">
-            <tr><td colspan="6" class="loading-row">Carregando alunos...</td></tr>
-          </tbody>
-        </table>
+      <!-- LOJA -->
+      <div class="panel">
+        <h2>Loja de uniformes</h2>
+        <p class="desc">Preços, descrições e fotos dos produtos vendidos pelo WhatsApp.</p>
+        <div id="produtosList"></div>
+        <button class="btn btn-outline btn-sm" id="addProduto" type="button">+ Adicionar produto</button>
+      </div>
+
+      <!-- TRANSMISSÃO -->
+      <div class="panel">
+        <h2>Transmissão ao vivo</h2>
+        <p class="desc">Link do vídeo/canal do YouTube incorporado no site, e a agenda de jogos.</p>
+        <div class="field">
+          <label for="cfgEmbed">Link do vídeo/live no YouTube</label>
+          <input type="text" id="cfgEmbed" placeholder="Cole aqui o link normal do YouTube (assistir, live ou compartilhar)">
+          <p class="hint" id="embedHint">Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.</p>
+        </div>
+        <div class="field">
+          <label for="cfgLegenda">Legenda abaixo do vídeo</label>
+          <input type="text" id="cfgLegenda">
+        </div>
+        <div id="jogosList" style="margin-top:1.2rem;"></div>
+        <button class="btn btn-outline btn-sm" id="addJogo" type="button">+ Adicionar jogo</button>
+      </div>
+
+      <!-- UNIDADES -->
+      <div class="panel">
+        <h2>Unidades</h2>
+        <p class="desc">Endereço, categorias e responsável de cada unidade.</p>
+        <div id="unidadesList"></div>
+        <button class="btn btn-outline btn-sm" id="addUnidade" type="button">+ Adicionar unidade</button>
+      </div>
+
+      <!-- OFERTAS -->
+      <div class="panel">
+        <h2>Ofertas e promoções</h2>
+        <div id="ofertasList"></div>
+        <button class="btn btn-outline btn-sm" id="addOferta" type="button">+ Adicionar oferta</button>
+      </div>
+
+      <!-- SEGURANÇA -->
+      <div class="panel">
+        <h2>Segurança</h2>
+        <p class="desc">Trocar a senha de acesso a este painel.</p>
+        <div class="row2">
+          <div class="field"><label for="novaSenha1">Nova senha</label><input type="password" id="novaSenha1" placeholder="Mínimo 6 caracteres"></div>
+          <div class="field"><label for="novaSenha2">Confirmar nova senha</label><input type="password" id="novaSenha2"></div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="trocarSenhaBtn" type="button">Trocar senha</button>
+        <p class="hint" id="senhaMsg"></p>
+      </div>
+
+      <div class="panel" style="text-align:center;">
+        <button class="btn btn-yellow" id="downloadBtn2">Baixar config.js atualizado</button>
+        <p class="hint">Lembre-se: baixar e substituir o arquivo no servidor é o que publica as mudanças para todo mundo.</p>
+        <button class="btn btn-red" id="resetBtn" type="button" style="margin-top:1rem;">Restaurar valores padrão (só neste navegador)</button>
       </div>
 
     </div>
+    <footer class="admin-footer">Painel Admin · Escolinha Nova Geração F.C.</footer>
   </div>
 
-  <!-- MODAL: novo/editar aluno -->
-  <div class="modal-overlay hidden" id="modalOverlay">
-    <div class="modal">
-      <h2 id="modalTitulo">Novo aluno</h2>
-      <form id="formAluno">
-        <input type="hidden" id="alunoId">
-        <div class="form-row">
-          <label for="mNome">Nome do aluno</label>
-          <input type="text" id="mNome" required>
-        </div>
-        <div class="form-two">
-          <div class="form-row">
-            <label for="mIdade">Idade</label>
-            <input type="number" id="mIdade" min="4" max="18" required>
-          </div>
-          <div class="form-row">
-            <label for="mUnidade">Unidade</label>
-            <select id="mUnidade" required>
-              <option value="">Selecione</option>
-              <option>Centro</option>
-              <option>Zona Norte</option>
-              <option>Zona Sul</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <label for="mResponsavel">Nome do responsável</label>
-          <input type="text" id="mResponsavel" required>
-        </div>
-        <div class="form-row">
-          <label for="mTelefone">Telefone / WhatsApp do responsável</label>
-          <input type="tel" id="mTelefone" required placeholder="Com DDD, ex: 11987654321">
-        </div>
-        <div class="form-two">
-          <div class="form-row">
-            <label for="mDataInicio">Início da matrícula</label>
-            <input type="date" id="mDataInicio" required>
-          </div>
-          <div class="form-row">
-            <label for="mVencimento">Dia de vencimento</label>
-            <input type="number" id="mVencimento" min="1" max="31" placeholder="Ex: 10" required>
-          </div>
-        </div>
-        <div class="form-two">
-          <div class="form-row">
-            <label for="mValor">Valor da mensalidade (R$)</label>
-            <input type="number" id="mValor" min="0" step="0.01" required>
-          </div>
-          <div class="form-row">
-            <label for="mStatus">Status do mês atual</label>
-            <select id="mStatus" required>
-              <option value="Pendente">Pendente</option>
-              <option value="Pago">Pago</option>
-              <option value="Atrasado">Atrasado</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-ghost" id="btnCancelarModal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" id="btnSalvarAluno">Salvar aluno</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: histórico do aluno -->
-  <div class="modal-overlay hidden" id="historicoOverlay">
-    <div class="modal">
-      <h2 id="historicoTitulo">Histórico</h2>
-      <div id="historicoLista"></div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-ghost btn-block" id="btnFecharHistorico">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
+<script src="config.js"></script>
 <script>
-  // ================== CONFIGURAÇÃO ==================
-  // Troque a senha abaixo. Ela também é enviada como token para a função do
-  // servidor (Netlify Functions) autorizar leitura/gravação no GitHub — por
-  // isso a variável de ambiente ADMIN_TOKEN no Netlify precisa ter O MESMO
-  // valor desta senha. Veja o README-DEPLOY.md para o passo a passo.
-  const SENHA_PAINEL = "1234";
-  const WHATSAPP_NUMERO = "5569993801797"; // número da escolinha, só dígitos com DDI+DDD
+  const DEFAULTS = window.SITE_CONFIG;
 
-  // Endereço da função que lê/grava os alunos no GitHub. Funciona sozinho
-  // quando o site está publicado no Netlify (não precisa trocar nada aqui).
-  const API_ALUNOS = "/.netlify/functions/alunos";
-  // Página pública onde o responsável assina o contrato (mesmo domínio do site).
-  const CONTRATO_BASE = "/contrato.html";
+  function toYouTubeEmbed(url){
+    if (!url) return url;
+    if (/youtube\.com\/embed\//.test(url)) return url;
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{6,})/,
+      /[?&]v=([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/live\/([a-zA-Z0-9_-]{6,})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/
+    ];
+    for (const re of patterns){
+      const m = url.match(re);
+      if (m) return `https://www.youtube.com/embed/${m[1]}`;
+    }
+    return url;
+  }
 
-  const STORAGE_KEY = "nova-geracao-alunos"; // cópia local, usada se o servidor não responder
-  const TOKEN_KEY = "nova-geracao-admin-token";
-  const MIGRATION_KEY = "nova-geracao-migrado-github"; // controla a migração única do localStorage pro GitHub
+  async function sha256(text){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
 
-  let alunos = [];
-  let adminToken = localStorage.getItem(TOKEN_KEY) || "";
+  function loadState(){
+    try{
+      const saved = localStorage.getItem('ng_site_config');
+      if (saved) return Object.assign({}, DEFAULTS, JSON.parse(saved));
+    }catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULTS));
+  }
+  let state = loadState();
 
-  // ================== LOGIN ==================
+  // ---------- LOGIN ----------
   const loginScreen = document.getElementById('loginScreen');
-  const appEl = document.getElementById('app');
-  const senhaInput = document.getElementById('senhaInput');
-  const loginError = document.getElementById('loginError');
-
-  document.getElementById('btnEntrar').addEventListener('click', tentarEntrar);
-  senhaInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tentarEntrar(); });
-
-  function tentarEntrar(){
-    if (senhaInput.value === SENHA_PAINEL){
-      adminToken = senhaInput.value;
-      localStorage.setItem(TOKEN_KEY, adminToken);
-      loginScreen.classList.add('hidden');
-      appEl.classList.remove('hidden');
-      carregarAlunos();
-    } else {
-      loginError.textContent = "Senha incorreta. Tente de novo.";
-    }
-  }
-
-  document.getElementById('btnSair').addEventListener('click', () => {
-    appEl.classList.add('hidden');
-    loginScreen.classList.remove('hidden');
-    senhaInput.value = '';
-    loginError.textContent = '';
-  });
-
-  // ================== SINCRONIZAÇÃO ==================
-  function marcarSync(status, texto){
-    const pill = document.getElementById('syncPill');
-    pill.classList.remove('ok', 'off');
-    if (status) pill.classList.add(status);
-    document.getElementById('syncTexto').textContent = texto;
-  }
-
-  // ================== STORAGE ==================
-  // Os alunos ficam guardados de verdade no repositório do GitHub (arquivo
-  // data/alunos.json), lidos e gravados através de uma função do Netlify —
-  // assim toda a equipe de coordenação vê os mesmos dados, em qualquer
-  // aparelho. Uma cópia também fica salva neste navegador (localStorage)
-  // só para o painel continuar funcionando se a internet cair.
-  async function carregarAlunos(){
-    marcarSync(null, "Sincronizando...");
-
-    let dadosServidor = null;
-    try {
-      const resp = await fetch(API_ALUNOS, { headers: { 'x-admin-token': adminToken } });
-      if (!resp.ok) throw new Error('status ' + resp.status);
-      dadosServidor = await resp.json();
-    } catch (err) {
-      dadosServidor = null;
-    }
-
-    let cacheLocal = [];
-    try {
-      const bruto = localStorage.getItem(STORAGE_KEY);
-      cacheLocal = bruto ? JSON.parse(bruto) : [];
-    } catch (e2) {
-      cacheLocal = [];
-    }
-
-    if (dadosServidor === null){
-      // sem conexão com o servidor agora: usa o que tiver salvo neste aparelho
-      alunos = cacheLocal;
-      marcarSync('off', 'Sem conexão — mostrando dados deste aparelho');
-      mostrarToast("Não consegui falar com o servidor agora. Mostrando os últimos dados salvos neste aparelho.");
-    } else if (dadosServidor.length === 0 && cacheLocal.length > 0 && !localStorage.getItem(MIGRATION_KEY)){
-      // primeira sincronização deste aparelho: já existiam alunos salvos só
-      // localmente (versão antiga do painel) e o GitHub ainda está vazio.
-      // Envia os dados deste aparelho pro servidor em vez de apagar tudo.
-      alunos = cacheLocal;
-      localStorage.setItem(MIGRATION_KEY, '1');
-      await salvarAlunos();
-      mostrarToast("Alunos salvos neste aparelho foram enviados para o servidor.");
-    } else {
-      alunos = dadosServidor;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(alunos));
-      localStorage.setItem(MIGRATION_KEY, '1');
-      marcarSync('ok', 'Sincronizado com o servidor');
-    }
-
-    alunos.forEach(a => { if (!Array.isArray(a.historico)) a.historico = []; });
-    const mudouAlgo = verificarAtrasos();
-    if (mudouAlgo) await salvarAlunos();
-    renderizar();
-  }
-
-  // Marca automaticamente como "Atrasado" quem está "Pendente" e já passou
-  // do dia de vencimento cadastrado. Roda toda vez que o painel é aberto.
-  function verificarAtrasos(){
-    const diaHoje = new Date().getDate();
-    let mudou = false;
-    alunos.forEach(a => {
-      if (a.status === 'Pendente' && a.vencimento && diaHoje > Number(a.vencimento)){
-        a.status = 'Atrasado';
-        registrarHistorico(a, `Status alterado automaticamente para Atrasado (vencimento era dia ${a.vencimento}).`);
-        mudou = true;
-      }
-    });
-    return mudou;
-  }
-
-  async function salvarAlunos(){
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(alunos));
-    } catch (err) {
-      // segue o fluxo mesmo se o cache local falhar — o importante é o GitHub
-    }
-    try {
-      const resp = await fetch(API_ALUNOS, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
-        body: JSON.stringify(alunos)
-      });
-      if (!resp.ok) throw new Error('status ' + resp.status);
-      marcarSync('ok', 'Sincronizado com o servidor');
-    } catch (err) {
-      marcarSync('off', 'Não sincronizado — salvo só neste aparelho');
-      mostrarToast("Não consegui salvar no servidor agora. Os dados ficaram só neste aparelho até a conexão voltar.");
-    }
-  }
-
-  function registrarHistorico(aluno, texto){
-    if (!Array.isArray(aluno.historico)) aluno.historico = [];
-    const agora = new Date();
-    aluno.historico.unshift({
-      data: agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}),
-      texto
-    });
-  }
-
-  // ================== RENDER ==================
-  function formatarDataBr(dataIso){
-    if (!dataIso) return '—';
-    const [ano, mes, dia] = dataIso.split('-');
-    return `${dia}/${mes}/${ano}`;
-  }
-
-  function formatarMoeda(v){
-    return "R$" + Number(v).toFixed(2).replace('.', ',');
-  }
-
-  // Garante que o link do WhatsApp sempre use o número cadastrado do responsável,
-  // completando o DDI do Brasil (55) quando a pessoa não digitou.
-  function formatarNumeroWhatsapp(telefone){
-    let numeros = String(telefone || '').replace(/\D/g, '');
-    if (!numeros) return null;
-    // número com DDD (10 ou 11 dígitos) e sem DDI -> adiciona 55
-    if (numeros.length === 10 || numeros.length === 11){
-      numeros = '55' + numeros;
-    }
-    // muito curto pra ser um número válido
-    if (numeros.length < 12) return null;
-    return numeros;
-  }
-
-  function renderizar(){
-    // resumo
-    const totalAlunos = alunos.length;
-    const pagas = alunos.filter(a => a.status === 'Pago').length;
-    const atrasadas = alunos.filter(a => a.status === 'Atrasado');
-    const valorAtraso = atrasadas.reduce((soma, a) => soma + Number(a.valor || 0), 0);
-
-    document.getElementById('sumTotal').textContent = totalAlunos;
-    document.getElementById('sumPagas').textContent = pagas;
-    document.getElementById('sumAtrasadas').textContent = atrasadas.length;
-    document.getElementById('sumValorAtraso').textContent = formatarMoeda(valorAtraso);
-
-    const alertBar = document.getElementById('alertBar');
-    if (atrasadas.length > 0){
-      alertBar.classList.add('show');
-      document.getElementById('alertCount').textContent = atrasadas.length;
-    } else {
-      alertBar.classList.remove('show');
-    }
-
-    // filtros
-    const nomeFiltro = document.getElementById('filtroNome').value.trim().toLowerCase();
-    const unidadeFiltro = document.getElementById('filtroUnidade').value;
-    const statusFiltro = document.getElementById('filtroStatus').value;
-
-    const filtrados = alunos.filter(a => {
-      const bateNome = a.nome.toLowerCase().includes(nomeFiltro);
-      const bateUnidade = !unidadeFiltro || a.unidade === unidadeFiltro;
-      const bateStatus = !statusFiltro || a.status === statusFiltro;
-      return bateNome && bateUnidade && bateStatus;
-    });
-
-    const tbody = document.getElementById('tabelaAlunos');
-    tbody.innerHTML = '';
-
-    if (alunos.length === 0){
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">Nenhum aluno cadastrado ainda.<br>Use "+ Novo aluno" pra começar o controle de mensalidades.</div></td></tr>`;
-      return;
-    }
-    if (filtrados.length === 0){
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">Nenhum aluno encontrado com esse filtro.</div></td></tr>`;
-      return;
-    }
-
-    filtrados.forEach(a => {
-      const tr = document.createElement('tr');
-      const statusClasse = a.status === 'Pago' ? 'status-pago' : a.status === 'Atrasado' ? 'status-atrasado' : 'status-pendente';
-
-      tr.innerHTML = `
-        <td>
-          <div class="aluno-nome">${escapeHtml(a.nome)}</div>
-          <div class="aluno-sub">${a.idade} anos</div>
-        </td>
-        <td>${escapeHtml(a.unidade)}</td>
-        <td>
-          <div>${escapeHtml(a.responsavel)}</div>
-          <div class="aluno-sub">${escapeHtml(a.telefone)}</div>
-        </td>
-        <td>${formatarMoeda(a.valor)}</td>
-        <td>
-          <span class="status-pill ${statusClasse}">${a.status}</span>
-          ${a.contratoAssinado
-            ? `<div class="badge-assinado">✔ Contrato assinado</div>`
-            : `<div class="badge-pendente-contrato">Contrato pendente</div>`}
-        </td>
-        <td>
-          <div class="row-actions">
-            ${a.status !== 'Pago' ? `<button class="btn btn-primary btn-sm" data-acao="pagar" data-id="${a.id}">Marcar pago</button>` : ''}
-            ${a.status !== 'Pago' ? `<button class="btn btn-wa btn-sm" data-acao="cobrar" data-id="${a.id}">Cobrar</button>` : ''}
-            <button class="btn btn-wa btn-sm" data-acao="contrato" data-id="${a.id}">${a.contratoAssinado ? 'Reenviar contrato' : 'Contrato'}</button>
-            <button class="btn btn-ghost btn-sm" data-acao="editar" data-id="${a.id}">Editar</button>
-            <button class="btn btn-ghost btn-sm" data-acao="historico" data-id="${a.id}">Histórico</button>
-            <button class="btn btn-danger btn-sm" data-acao="excluir" data-id="${a.id}">Excluir</button>
-          </div>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function escapeHtml(str){
-    const div = document.createElement('div');
-    div.textContent = str ?? '';
-    return div.innerHTML;
-  }
-
-  // ================== AÇÕES DA TABELA ==================
-  document.getElementById('tabelaAlunos').addEventListener('click', async (e) => {
-    const btn = e.target.closest('button[data-acao]');
-    if (!btn) return;
-    const id = btn.getAttribute('data-id');
-    const acao = btn.getAttribute('data-acao');
-    const aluno = alunos.find(a => a.id === id);
-    if (!aluno) return;
-
-    if (acao === 'pagar'){
-      aluno.status = 'Pago';
-      registrarHistorico(aluno, `Mensalidade de ${formatarMoeda(aluno.valor)} marcada como Paga.`);
-      await salvarAlunos();
-      renderizar();
-      mostrarToast(`Mensalidade de ${aluno.nome} marcada como paga.`);
-    }
-
-    if (acao === 'cobrar'){
-      const numero = formatarNumeroWhatsapp(aluno.telefone);
-      if (!numero){
-        mostrarToast("Telefone inválido. Edite o cadastro e confira o número.");
-        return;
-      }
-      const msg = aluno.status === 'Atrasado'
-        ? `Olá, tudo bem?!
-Este é um lembrete de que a mensalidade da *Escolinha Nova Geração* está *em atraso*.
-
-*Vencimento:* dia ${aluno.vencimento || '-'}
-*Atleta:* ${aluno.nome}
-*Horário:* 
-
-# Dados para pagamento
-- *Chave PIX:* 6999329-6232
-- *Nome:* FRANKINEY BEZERRA
-- *Banco:* MERCADOPAGO
-
-Após o pagamento, envie o comprovante por aqui mesmo no WhatsApp.
-
-Se houver algum imprevisto com a data de pagamento, por favor avise a secretaria.
-Para cancelar a matrícula do atleta, fale com a secretária Vanessa: (69) 9 9380-1797.
-
-*Obs:* o atleta precisa estar com a mensalidade em dia para participar dos treinos.
-
-Obrigado!
-*Escolinha Nova Geração*`
-        : `Olá, tudo bem?!
-Este é um lembrete de que a mensalidade da *Escolinha Nova Geração* está *próxima do vencimento*.
-
-*Vencimento:* dia ${aluno.vencimento || '-'}
-*Atleta:* ${aluno.nome}
-*Horário:* 
-
-# Dados para pagamento
-- *Chave PIX:* 6999329-6232
-- *Nome:* FRANKINEY BEZERRA
-- *Banco:* MERCADOPAGO
-
-Após o pagamento, envie o comprovante por aqui mesmo no WhatsApp.
-
-Se houver algum imprevisto com a data de pagamento, por favor avise a secretaria.
-Para cancelar a matrícula do atleta, fale com a secretária Vanessa: (69) 9 9380-1797.
-
-*Obs:* o atleta precisa estar com a mensalidade em dia para participar dos treinos.
-
-Obrigado!
-*Escolinha Nova Geração*`;
-      registrarHistorico(aluno, `Cobrança enviada via WhatsApp (${aluno.status}).`);
-      await salvarAlunos();
-      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    if (acao === 'contrato'){
-      const numero = formatarNumeroWhatsapp(aluno.telefone);
-      if (!numero){
-        mostrarToast("Telefone inválido. Edite o cadastro e confira o número.");
-        return;
-      }
-      const link = `${window.location.origin}${CONTRATO_BASE}?id=${encodeURIComponent(aluno.id)}`;
-      const msg = `Olá, tudo bem?!
-Aqui é da *Escolinha Nova Geração*.
-
-Para confirmar a matrícula do(a) atleta *${aluno.nome}*, precisamos que você leia e assine o contrato de prestação de serviços — é digital, direto pelo celular.
-
-👉 Acesse o link para ler e assinar:
-${link}
-
-Leva menos de 2 minutos. Qualquer dúvida, fale com a secretária Vanessa: (69) 9 9380-1797.
-
-Obrigado!
-*Escolinha Nova Geração*`;
-      registrarHistorico(aluno, "Link do contrato digital enviado via WhatsApp.");
-      await salvarAlunos();
-      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    if (acao === 'editar'){
-      abrirModal(aluno);
-    }
-
-    if (acao === 'historico'){
-      abrirHistorico(aluno);
-    }
-
-    if (acao === 'excluir'){
-      if (confirm(`Excluir o cadastro de ${aluno.nome}? Essa ação não pode ser desfeita.`)){
-        alunos = alunos.filter(a => a.id !== id);
-        await salvarAlunos();
-        renderizar();
-        mostrarToast("Aluno excluído.");
-      }
-    }
-  });
-
-  // filtros reativos
-  ['filtroNome','filtroUnidade','filtroStatus'].forEach(id => {
-    document.getElementById(id).addEventListener('input', renderizar);
-  });
-
-  // novo mês: manda quem está "Pago" pra "Pendente" e mantém "Atrasado"
-  document.getElementById('btnNovoMes').addEventListener('click', async () => {
-    if (alunos.length === 0){ mostrarToast("Nenhum aluno cadastrado ainda."); return; }
-    if (!confirm("Iniciar novo mês? Todas as mensalidades marcadas como 'Pago' voltam para 'Pendente'.")) return;
-    alunos = alunos.map(a => {
-      if (a.status === 'Pago'){
-        registrarHistorico(a, 'Novo mês iniciado — status voltou para Pendente.');
-        return { ...a, status: 'Pendente' };
-      }
-      return a;
-    });
-    await salvarAlunos();
-    renderizar();
-    mostrarToast("Novo mês iniciado.");
-  });
-
-  // ================== MODAL ==================
-  const modalOverlay = document.getElementById('modalOverlay');
-  const formAluno = document.getElementById('formAluno');
-
-  document.getElementById('btnNovoAluno').addEventListener('click', () => abrirModal(null));
-  document.getElementById('btnCancelarModal').addEventListener('click', fecharModal);
-  modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) fecharModal(); });
-
-  function abrirModal(aluno){
-    document.getElementById('modalTitulo').textContent = aluno ? 'Editar aluno' : 'Novo aluno';
-    document.getElementById('alunoId').value = aluno ? aluno.id : '';
-    document.getElementById('mNome').value = aluno ? aluno.nome : '';
-    document.getElementById('mIdade').value = aluno ? aluno.idade : '';
-    document.getElementById('mUnidade').value = aluno ? aluno.unidade : '';
-    document.getElementById('mResponsavel').value = aluno ? aluno.responsavel : '';
-    document.getElementById('mTelefone').value = aluno ? aluno.telefone : '';
-    document.getElementById('mDataInicio').value = aluno ? (aluno.dataInicio || '') : '';
-    document.getElementById('mVencimento').value = aluno ? (aluno.vencimento || '') : '';
-    document.getElementById('mValor').value = aluno ? aluno.valor : '';
-    document.getElementById('mStatus').value = aluno ? aluno.status : 'Pendente';
-    modalOverlay.classList.remove('hidden');
-  }
-
-  function fecharModal(){
-    modalOverlay.classList.add('hidden');
-    formAluno.reset();
-  }
-
-  formAluno.addEventListener('submit', async (e) => {
+  const adminScreen = document.getElementById('adminScreen');
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const id = document.getElementById('alunoId').value;
+    const pass = document.getElementById('senhaInput').value;
+    const hash = await sha256(pass);
+    if (hash === state.adminPasswordHash){
+      sessionStorage.setItem('ng_admin_ok', '1');
+      loginScreen.style.display = 'none';
+      adminScreen.style.display = 'block';
+      renderAll();
+    } else {
+      document.getElementById('loginError').textContent = 'Senha incorreta. Tente novamente.';
+    }
+  });
+  if (sessionStorage.getItem('ng_admin_ok') === '1'){
+    loginScreen.style.display = 'none';
+    adminScreen.style.display = 'block';
+  }
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('ng_admin_ok');
+    location.reload();
+  });
 
-    const dados = {
-      nome: document.getElementById('mNome').value.trim(),
-      idade: document.getElementById('mIdade').value,
-      unidade: document.getElementById('mUnidade').value,
-      responsavel: document.getElementById('mResponsavel').value.trim(),
-      telefone: document.getElementById('mTelefone').value.trim(),
-      dataInicio: document.getElementById('mDataInicio').value,
-      vencimento: document.getElementById('mVencimento').value,
-      valor: document.getElementById('mValor').value,
-      status: document.getElementById('mStatus').value,
-    };
+  // ---------- SALVAR ----------
+  let saveTimer;
+  function persist(){
+    localStorage.setItem('ng_site_config', JSON.stringify(state));
+    const status = document.getElementById('saveStatus');
+    status.textContent = 'Salvo ✓ ' + new Date().toLocaleTimeString('pt-BR');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => status.textContent = '', 3000);
+  }
 
-    if (id){
-      const idx = alunos.findIndex(a => a.id === id);
-      if (idx > -1){
-        const statusAntigo = alunos[idx].status;
-        alunos[idx] = { ...alunos[idx], ...dados };
-        if (statusAntigo !== dados.status){
-          registrarHistorico(alunos[idx], `Status alterado manualmente de ${statusAntigo} para ${dados.status}.`);
-        } else {
-          registrarHistorico(alunos[idx], 'Dados do cadastro atualizados.');
-        }
+  function fileToDataURL(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ---------- GERAL ----------
+  function bindSimpleField(id, path){
+    const el = document.getElementById(id);
+    el.value = path.split('.').reduce((o,k)=>o[k], state) ?? '';
+    el.addEventListener('input', () => {
+      const keys = path.split('.');
+      let obj = state;
+      for (let i=0;i<keys.length-1;i++) obj = obj[keys[i]];
+      obj[keys[keys.length-1]] = el.value;
+      persist();
+    });
+  }
+
+  function renderGeral(){
+    bindSimpleField('cfgWhatsapp', 'whatsapp');
+    bindSimpleField('cfgWhatsappDisplay', 'whatsappDisplay');
+    bindSimpleField('cfgInstaUrl', 'instagramUrl');
+    bindSimpleField('cfgInstaHandle', 'instagramHandle');
+    bindSimpleField('cfgVagas', 'hero.vagas');
+    bindSimpleField('cfgDesconto', 'hero.desconto');
+    bindSimpleField('cfgValidade', 'hero.validade');
+    bindSimpleField('cfgLegenda', 'transmissao.legenda');
+
+    const embedInput = document.getElementById('cfgEmbed');
+    const embedHint = document.getElementById('embedHint');
+    embedInput.value = state.transmissao.embedUrl || '';
+    embedInput.addEventListener('input', () => {
+      state.transmissao.embedUrl = embedInput.value;
+      persist();
+    });
+    embedInput.addEventListener('blur', () => {
+      const converted = toYouTubeEmbed(embedInput.value.trim());
+      if (converted !== embedInput.value.trim()){
+        embedInput.value = converted;
+        state.transmissao.embedUrl = converted;
+        persist();
+        embedHint.textContent = 'Link convertido automaticamente para o formato de incorporação ✓';
+        embedHint.style.color = 'var(--green)';
+      } else {
+        embedHint.textContent = 'Pode colar o link como copiou do YouTube — o site converte sozinho para o formato certo.';
+        embedHint.style.color = 'var(--muted)';
       }
-    } else {
-      const novoAluno = { id: 'a_' + Date.now(), historico: [], ...dados };
-      registrarHistorico(novoAluno, `Aluno cadastrado com status ${dados.status}.`);
-      alunos.push(novoAluno);
-    }
+    });
 
-    verificarAtrasos();
-    await salvarAlunos();
-    renderizar();
-    fecharModal();
-    mostrarToast("Aluno salvo com sucesso.");
+    document.getElementById('logoThumb').src = state.logo;
+    document.getElementById('logoUpload').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      state.logo = await fileToDataURL(file);
+      document.getElementById('logoThumb').src = state.logo;
+      persist();
+    });
+  }
+
+  // ---------- listas genéricas ----------
+  function renderListSection(containerId, listKey, itemHTML, afterRenderItem){
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    state[listKey].forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'list-item';
+      div.innerHTML = `<div class="list-item-head"><span>#${i+1}</span><button type="button" class="btn btn-red" data-remove="${i}">Remover</button></div>` + itemHTML(item, i);
+      container.appendChild(div);
+      if (afterRenderItem) afterRenderItem(div, item, i);
+    });
+    container.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state[listKey].splice(Number(btn.dataset.remove), 1);
+        persist();
+        renderAll();
+      });
+    });
+  }
+
+  // ---------- PRODUTOS ----------
+  function renderProdutos(){
+    renderListSection('produtosList', 'produtos', (p) => `
+      <div class="produto-edit">
+        <div>
+          <img class="produto-thumb" src="${p.imagem}" data-thumb>
+          <input class="file-btn" type="file" accept="image/*" data-field="imagemFile">
+        </div>
+        <div>
+          <div class="row2">
+            <div class="field"><label>Nome do produto</label><input type="text" data-field="nome" value="${escapeAttr(p.nome)}"></div>
+            <div class="field"><label>Subtítulo / selo</label><input type="text" data-field="subtitulo" value="${escapeAttr(p.subtitulo||'')}"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Preço atual (R$)</label><input type="number" step="0.01" data-field="preco" value="${p.preco}"></div>
+            <div class="field"><label>Preço antigo (R$, opcional)</label><input type="number" step="0.01" data-field="precoAntigo" value="${p.precoAntigo ?? ''}"></div>
+            <div class="field"><label>Badge (ex: Poucas unidades)</label><input type="text" data-field="badge" value="${escapeAttr(p.badge||'')}"></div>
+          </div>
+          <div class="field"><label>Itens / características (um por linha)</label><textarea rows="3" data-field="itens">${(p.itens||[]).join('\n')}</textarea></div>
+        </div>
+      </div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          const field = input.dataset.field;
+          if (field === 'imagemFile'){
+            input.addEventListener('change', async (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              state.produtos[i].imagem = await fileToDataURL(file);
+              div.querySelector('[data-thumb]').src = state.produtos[i].imagem;
+              persist();
+            });
+            return;
+          }
+          input.addEventListener('input', () => {
+            if (field === 'itens'){ state.produtos[i].itens = input.value.split('\n').map(s=>s.trim()).filter(Boolean); }
+            else if (field === 'preco'){ state.produtos[i].preco = parseFloat(input.value)||0; }
+            else if (field === 'precoAntigo'){ state.produtos[i].precoAntigo = input.value ? parseFloat(input.value) : null; }
+            else { state.produtos[i][field] = input.value; }
+            persist();
+          });
+        });
+      });
+  }
+  document.getElementById('addProduto').addEventListener('click', () => {
+    state.produtos.push({ id:'produto-'+Date.now(), nome:'Novo produto', subtitulo:'', preco:0, precoAntigo:null, imagem:'assets/logo.webp', badge:'', itens:[] });
+    persist(); renderAll();
   });
 
-  // ================== HISTÓRICO ==================
-  const historicoOverlay = document.getElementById('historicoOverlay');
+  // ---------- JOGOS ----------
+  function renderJogos(){
+    renderListSection('jogosList', 'jogos', (j) => `
+      <div class="row3">
+        <div class="field"><label>Data/hora</label><input type="text" data-field="data" value="${escapeAttr(j.data)}" placeholder="SÁB · 09/08 · 9h"></div>
+        <div class="field"><label>Confronto</label><input type="text" data-field="times" value="${escapeAttr(j.times)}" placeholder="Nova Geração x Time"></div>
+        <div class="field"><label>Link para assistir</label><input type="text" data-field="link" value="${escapeAttr(j.link)}" placeholder="https://..."></div>
+      </div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.jogos[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
+  }
+  document.getElementById('addJogo').addEventListener('click', () => {
+    state.jogos.push({ data:'', times:'', link:'#' });
+    persist(); renderAll();
+  });
 
-  function abrirHistorico(aluno){
-    document.getElementById('historicoTitulo').textContent = `Histórico — ${aluno.nome}`;
-    const lista = document.getElementById('historicoLista');
-    const hist = aluno.historico || [];
-
-    const inicioTxt = aluno.dataInicio ? formatarDataBr(aluno.dataInicio) : '—';
-    const vencimentoTxt = aluno.vencimento ? `Todo dia ${aluno.vencimento}` : '—';
-
-    let html = `
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1.2rem; padding-bottom:1.2rem; border-bottom:1px solid var(--line);">
-        <div>
-          <div class="aluno-sub">Início da matrícula</div>
-          <div style="font-weight:700;">${escapeHtml(inicioTxt)}</div>
-        </div>
-        <div>
-          <div class="aluno-sub">Vencimento da mensalidade</div>
-          <div style="font-weight:700;">${escapeHtml(vencimentoTxt)}</div>
-        </div>
+  // ---------- UNIDADES ----------
+  function renderUnidades(){
+    renderListSection('unidadesList', 'unidades', (u) => `
+      <div class="row2">
+        <div class="field"><label>Nome da unidade</label><input type="text" data-field="nome" value="${escapeAttr(u.nome)}"></div>
+        <div class="field"><label>Responsável</label><input type="text" data-field="responsavel" value="${escapeAttr(u.responsavel)}"></div>
       </div>
-    `;
-
-    if (hist.length === 0){
-      html += `<div class="empty-state">Nenhum registro ainda.</div>`;
-    } else {
-      html += hist.map(h => `
-        <div style="padding:.7rem 0; border-bottom:1px solid var(--line);">
-          <div style="font-size:.72rem; color:var(--muted); font-family:var(--mono);">${escapeHtml(h.data)}</div>
-          <div style="font-size:.88rem; margin-top:.15rem;">${escapeHtml(h.texto)}</div>
-        </div>
-      `).join('');
-    }
-    lista.innerHTML = html;
-    historicoOverlay.classList.remove('hidden');
+      <div class="field"><label>Endereço</label><input type="text" data-field="endereco" value="${escapeAttr(u.endereco)}"></div>
+      <div class="field"><label>Categorias e horários</label><input type="text" data-field="categorias" value="${escapeAttr(u.categorias)}"></div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.unidades[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
   }
-
-  document.getElementById('btnFecharHistorico').addEventListener('click', () => {
-    historicoOverlay.classList.add('hidden');
-  });
-  historicoOverlay.addEventListener('click', (e) => {
-    if (e.target === historicoOverlay) historicoOverlay.classList.add('hidden');
+  document.getElementById('addUnidade').addEventListener('click', () => {
+    state.unidades.push({ nome:'Nova unidade', endereco:'', categorias:'', responsavel:'' });
+    persist(); renderAll();
   });
 
-  // ================== TOAST ==================
-  let toastTimeout;
-  function mostrarToast(msg){
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2600);
+  // ---------- OFERTAS ----------
+  function renderOfertas(){
+    renderListSection('ofertasList', 'ofertas', (o) => `
+      <div class="field"><label>Etiqueta (ex: Novos alunos)</label><input type="text" data-field="tag" value="${escapeAttr(o.tag)}"></div>
+      <div class="field"><label>Título</label><input type="text" data-field="titulo" value="${escapeAttr(o.titulo)}"></div>
+      <div class="field"><label>Texto</label><input type="text" data-field="texto" value="${escapeAttr(o.texto)}"></div>`,
+      (div, item, i) => {
+        div.querySelectorAll('[data-field]').forEach(input => {
+          input.addEventListener('input', () => { state.ofertas[i][input.dataset.field] = input.value; persist(); });
+        });
+      });
   }
+  document.getElementById('addOferta').addEventListener('click', () => {
+    state.ofertas.push({ tag:'', titulo:'', texto:'' });
+    persist(); renderAll();
+  });
+
+  function escapeAttr(s){ return String(s ?? '').replace(/"/g,'&quot;'); }
+
+  function renderAll(){
+    renderGeral();
+    renderProdutos();
+    renderJogos();
+    renderUnidades();
+    renderOfertas();
+  }
+
+  // ---------- SENHA ----------
+  document.getElementById('trocarSenhaBtn').addEventListener('click', async () => {
+    const p1 = document.getElementById('novaSenha1').value;
+    const p2 = document.getElementById('novaSenha2').value;
+    const msg = document.getElementById('senhaMsg');
+    if (p1.length < 6){ msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; msg.style.color = 'var(--red)'; return; }
+    if (p1 !== p2){ msg.textContent = 'As senhas não coincidem.'; msg.style.color = 'var(--red)'; return; }
+    state.adminPasswordHash = await sha256(p1);
+    persist();
+    msg.textContent = 'Senha alterada! Baixe o config.js atualizado para que a nova senha valha em todos os navegadores.';
+    msg.style.color = 'var(--green)';
+    document.getElementById('novaSenha1').value = '';
+    document.getElementById('novaSenha2').value = '';
+  });
+
+  // ---------- DOWNLOAD config.js ----------
+  function downloadConfig(){
+    const content = `/* ============================================================
+   CONFIG.JS — Escolinha Nova Geração F.C.
+   Gerado pelo Painel Admin em ${new Date().toLocaleString('pt-BR')}
+   Substitua o config.js do seu site por este arquivo para publicar
+   as alterações para todos os visitantes.
+   ============================================================ */
+
+window.SITE_CONFIG = ${JSON.stringify(state, null, 2)};
+`;
+    const blob = new Blob([content], { type: 'text/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'config.js';
+    a.click();
+  }
+  document.getElementById('downloadBtn').addEventListener('click', downloadConfig);
+  document.getElementById('downloadBtn2').addEventListener('click', downloadConfig);
+
+  // ---------- RESET ----------
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Isso vai apagar as edições salvas neste navegador e voltar aos valores do config.js original. Continuar?')) return;
+    localStorage.removeItem('ng_site_config');
+    state = JSON.parse(JSON.stringify(DEFAULTS));
+    renderAll();
+    persist();
+  });
 </script>
-
 </body>
 </html>
